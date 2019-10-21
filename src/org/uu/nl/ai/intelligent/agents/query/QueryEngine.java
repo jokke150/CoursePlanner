@@ -26,7 +26,7 @@ import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.uu.nl.ai.intelligent.agents.CoursePlanner;
 
 public class QueryEngine {
-	private QueryEngine instance = null;
+	private static QueryEngine instance = null;
 
 	private final OWLReasoner reasoner;
 	private final QueryParser parser;
@@ -52,11 +52,12 @@ public class QueryEngine {
 		this.parser = new QueryParser(reasoner.getRootOntology(), this.shortFormProvider);
 	}
 
-	public QueryEngine getInstance() throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
-		if (this.instance == null) {
-			this.instance = new QueryEngine();
+	public static QueryEngine getInstance()
+			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
+		if (instance == null) {
+			instance = new QueryEngine();
 		}
-		return this.instance;
+		return instance;
 	}
 
 	public Set<OWLClass> getSuperClasses(final String classExpressionString, final boolean direct) {
