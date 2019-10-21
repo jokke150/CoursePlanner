@@ -3,25 +3,27 @@ package org.uu.nl.ai.intelligent.agents;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.uu.nl.ai.intelligent.agents.query.QueryEngine;
 
 public class CoursePlanner {
 	public static final String ONTOLOGY_PATH = "ontology/CoursePlanner.owl";
 
-	public static void main(final String[] args) throws IOException {
+	public static void main(final String[] args) throws IOException, OWLOntologyCreationException {
 		System.out.println("Hello World");
 
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		final List<String> friends = askForFriends(reader);
-		final List<String> preferredCourses = askForPreferredCourses(reader);
-		final List<String> preferredTopics = askForPreferredTopics(reader);
-		final List<String> preferredLecturers = askForPreferredLecturers(reader);
-		final List<String> preferredDays = askForPreferredDays(reader);
+		final Set<String> friends = askForFriends(reader);
+		final Set<String> preferredCourses = askForPreferredCourses(reader);
+		final Set<String> preferredTopics = askForPreferredTopics(reader);
+		final Set<String> preferredLecturers = askForPreferredLecturers(reader);
+		final Set<String> preferredDays = askForPreferredDays(reader);
 
 		final short friendsImportance;
 		final short coursesImportance;
@@ -30,58 +32,72 @@ public class CoursePlanner {
 		final short daysImportance;
 	}
 
-	private static List<String> askForFriends(final BufferedReader reader) throws IOException {
-		// TODO: Query range and validate
-		System.out.println("Please enter your friends names (comma-separated): ");
-		final String friends = reader.readLine();
-		return Arrays.asList(friends.split("[ ]*,[ ]*"));
+	private static Set<String> askForFriends(final BufferedReader reader)
+			throws IOException, OWLOntologyCreationException {
+		final Set<String> students = QueryEngine.getInstance().getInstancesShortForm("Student", false);
+		Set<String> friends;
+		do {
+			System.out.println("Please enter your friends names (comma-separated): ");
+			printRange(students);
+			friends = convertInput(reader.readLine());
+		} while (!isInputValid(friends, students));
+		return friends;
 	}
 
-	private static List<String> askForFriendsImportance(final BufferedReader reader) throws IOException {
-		// TODO: Query range and validate
-		System.out.println("How important is it to you that you take the courses your friends take? (Scale 1-10): ");
-		final String friends = reader.readLine();
-		return Arrays.asList(friends.split("[ ]*,[ ]*"));
+	private static Set<String> askForPreferredCourses(final BufferedReader reader)
+			throws IOException, OWLOntologyCreationException {
+		final Set<String> courses = QueryEngine.getInstance().getInstancesShortForm("Course", false);
+		Set<String> preferredCourses;
+		do {
+			System.out.println("Please enter your preferred courses (comma-separated): ");
+			printRange(courses);
+			preferredCourses = convertInput(reader.readLine());
+		} while (!isInputValid(preferredCourses, courses));
+		return preferredCourses;
 	}
 
-	private static List<String> askForPreferredCourses(final BufferedReader reader) throws IOException {
-		// TODO: Query range and validate
-		final Set<String> students = QueryEngine
-		System.out.println("Please enter your preferred courses (comma-separated): ");
-		final String courses = reader.readLine();
-		return Arrays.asList(courses.split("[ ]*,[ ]*"));
+	private static Set<String> askForPreferredTopics(final BufferedReader reader)
+			throws IOException, OWLOntologyCreationException {
+		final Set<String> topics = QueryEngine.getInstance().getInstancesShortForm("Topic", false);
+		Set<String> preferredTopics;
+		do {
+			System.out.println("Please enter your preferred courses (comma-separated): ");
+			printRange(topics);
+			preferredTopics = convertInput(reader.readLine());
+		} while (!isInputValid(preferredTopics, topics));
+		return preferredTopics;
 	}
 
-	private static List<String> askForPreferredTopics(final BufferedReader reader) throws IOException {
-		// TODO: Query range and validate
-		System.out.println("Please enter your preferred topics (comma-separated): ");
-		final String topics = reader.readLine();
-		return Arrays.asList(topics.split("[ ]*,[ ]*"));
+	private static Set<String> askForPreferredLecturers(final BufferedReader reader)
+			throws IOException, OWLOntologyCreationException {
+		final Set<String> lecturers = QueryEngine.getInstance().getInstancesShortForm("Lecturer", false);
+		Set<String> preferredLecturers;
+		do {
+			System.out.println("Please enter your preferred lecturers (comma-separated): ");
+			printRange(lecturers);
+			preferredLecturers = convertInput(reader.readLine());
+		} while (!isInputValid(preferredLecturers, lecturers));
+		return preferredLecturers;
 	}
 
-	private static List<String> askForPreferredLecturers(final BufferedReader reader) throws IOException {
-		// TODO: Query range and validate
-		System.out.println("Please enter your preferred lecturers (comma-separated): ");
-		return convertInput(reader.readLine());
-	}
-
-	private static List<String> askForPreferredDays(final BufferedReader reader) throws IOException {
-		final List<String> days = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
-		List<String> preferredDayStrings;
+	private static Set<String> askForPreferredDays(final BufferedReader reader) throws IOException {
+		final List<String> days = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
+				"Sunday");
+		Set<String> preferredDays;
 		do {
 			System.out.println("Please enter your preferred days (comma-separated): ");
 			printRange(days);
-			preferredDayStrings = convertInput(reader.readLine());
-		} while (!isInputValid(preferredDayStrings, days));
-		return preferredDayStrings;
+			preferredDays = convertInput(reader.readLine());
+		} while (!isInputValid(preferredDays, days));
+		return preferredDays;
 	}
 
-	private static void printRange(final List<String> range) {
+	private static void printRange(final Collection<String> range) {
 		System.out.println("Valid values: " + Arrays.toString(range.toArray()));
 	}
 
-	private static List<String> convertInput(final String input) {
-		final List<String> output = new ArrayList<>();
+	private static Set<String> convertInput(final String input) {
+		final Set<String> output = new HashSet<>();
 		for (final String in : input.split("[ ]*,[ ]*")) {
 			if (!in.isBlank()) {
 				output.add(in);
@@ -90,7 +106,7 @@ public class CoursePlanner {
 		return output;
 	}
 
-	private static boolean isInputValid(final List<String> input, final List<String> range) {
+	private static boolean isInputValid(final Collection<String> input, final Collection<String> range) {
 		final boolean isValid = input.stream().allMatch(i -> range.contains(i));
 		if (!isValid) {
 			System.out.println("Input is not valid, please try again. ");
