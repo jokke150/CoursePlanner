@@ -1,0 +1,1181 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#"
+     xml:base="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2"
+     xmlns:uu="http:/uu.nl/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#preferredBy -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#preferredBy">
+        <owl:inverseOf rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#prefers"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Student"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#prefers -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#prefers">
+        <rdfs:domain rdf:resource="http:/uu.nl/Student"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/coursePreferredBy -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/coursePreferredBy">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#preferredBy"/>
+        <owl:inverseOf rdf:resource="http:/uu.nl/prefersCourse"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Student"/>
+        <rdfs:label>coursePreferredBy</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/dayPreferredBy -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/dayPreferredBy">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#preferredBy"/>
+        <owl:inverseOf rdf:resource="http:/uu.nl/prefersDay"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Day"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Student"/>
+        <rdfs:label>dayPreferredBy</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/hasTaken -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/hasTaken">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Student"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Course"/>
+        <owl:propertyDisjointWith rdf:resource="http:/uu.nl/takes"/>
+        <rdfs:label>hasTaken</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/isOn -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/isOn">
+        <rdfs:domain rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Topic"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">isOn</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/isPrerequisite -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/isPrerequisite">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Prerequisite"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">isPrerequisite</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/isSubtopicOf -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/isSubtopicOf">
+        <rdfs:domain rdf:resource="http:/uu.nl/Subtopic"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Topic"/>
+        <rdfs:label>isSubtopicOf</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/lecturerPreferredBy -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/lecturerPreferredBy">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#preferredBy"/>
+        <owl:inverseOf rdf:resource="http:/uu.nl/prefersLecturer"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Lecturer"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Student"/>
+        <rdfs:label>lecturerPreferredBy</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/prefersCourse -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/prefersCourse">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#prefers"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Student"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Course"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/prefersDay -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/prefersDay">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#prefers"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Student"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Day"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/prefersLecturer -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/prefersLecturer">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#prefers"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Student"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Lecturer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/prefersTopic -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/prefersTopic">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#prefers"/>
+        <owl:inverseOf rdf:resource="http:/uu.nl/topicPreferredBy"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Student"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Topic"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/takes -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/takes">
+        <rdfs:domain rdf:resource="http:/uu.nl/Student"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:label>takes</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/taughtBy -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/taughtBy">
+        <owl:inverseOf rdf:resource="http:/uu.nl/teaches"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Lecturer"/>
+        <rdfs:label>taughtBy</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/taughtIn -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/taughtIn">
+        <rdfs:domain rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:label>taughtIn</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/taughtOn -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/taughtOn">
+        <rdfs:domain rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Day"/>
+        <rdfs:label>taughtOn</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/teaches -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/teaches">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Lecturer"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:label>teaches</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/topicPreferredBy -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/topicPreferredBy">
+        <rdfs:subPropertyOf rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#preferredBy"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Topic"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Student"/>
+        <rdfs:label>topicPreferredBy</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http:/uu.nl/uses -->
+
+    <owl:ObjectProperty rdf:about="http:/uu.nl/uses">
+        <rdfs:domain rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:range rdf:resource="http:/uu.nl/ResearchMethodology"/>
+        <rdfs:label>uses</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http:/uu.nl/first_name -->
+
+    <owl:DatatypeProperty rdf:about="http:/uu.nl/first_name">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>first_name</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http:/uu.nl/last_name -->
+
+    <owl:DatatypeProperty rdf:about="http:/uu.nl/last_name">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>last_name</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http:/uu.nl/staff_ID -->
+
+    <owl:DatatypeProperty rdf:about="http:/uu.nl/staff_ID">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Lecturer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>staff_ID</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http:/uu.nl/student_ID -->
+
+    <owl:DatatypeProperty rdf:about="http:/uu.nl/student_ID">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Student"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>student_ID</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PreferringStudent -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PreferringStudent">
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http:/uu.nl/prefersCourse"/>
+                <owl:someValuesFrom rdf:resource="http:/uu.nl/Course"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http:/uu.nl/prefersDay"/>
+                <owl:someValuesFrom rdf:resource="http:/uu.nl/Day"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http:/uu.nl/prefersLecturer"/>
+                <owl:someValuesFrom rdf:resource="http:/uu.nl/Lecturer"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <owl:equivalentClass>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http:/uu.nl/prefersTopic"/>
+                <owl:someValuesFrom rdf:resource="http:/uu.nl/Topic"/>
+            </owl:Restriction>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http:/uu.nl/Student"/>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/Course -->
+
+    <owl:Class rdf:about="http:/uu.nl/Course">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http:/uu.nl/CoursesPerPeriod1"/>
+                    <rdf:Description rdf:about="http:/uu.nl/CoursesPerPeriod2"/>
+                    <rdf:Description rdf:about="http:/uu.nl/CoursesPerPeriod3"/>
+                    <rdf:Description rdf:about="http:/uu.nl/CoursesPerPeriod4"/>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/taughtOn"/>
+                        <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/Day"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/taughtOn"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/Day"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http:/uu.nl/isOn"/>
+                <owl:someValuesFrom rdf:resource="http:/uu.nl/Topic"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http:/uu.nl/taughtBy"/>
+                <owl:someValuesFrom rdf:resource="http:/uu.nl/Lecturer"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http:/uu.nl/uses"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http:/uu.nl/ResearchMethodology"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="http:/uu.nl/Day"/>
+        <owl:disjointWith rdf:resource="http:/uu.nl/Person"/>
+        <owl:disjointWith rdf:resource="http:/uu.nl/ResearchMethodology"/>
+        <owl:disjointWith rdf:resource="http:/uu.nl/Topic"/>
+        <rdfs:label>Course</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/CoursesPerPeriod1 -->
+
+    <owl:Class rdf:about="http:/uu.nl/CoursesPerPeriod1">
+        <rdfs:subClassOf rdf:resource="http:/uu.nl/Course"/>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/CoursesPerPeriod2 -->
+
+    <owl:Class rdf:about="http:/uu.nl/CoursesPerPeriod2">
+        <rdfs:subClassOf rdf:resource="http:/uu.nl/Course"/>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/CoursesPerPeriod3 -->
+
+    <owl:Class rdf:about="http:/uu.nl/CoursesPerPeriod3">
+        <rdfs:subClassOf rdf:resource="http:/uu.nl/Course"/>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/CoursesPerPeriod4 -->
+
+    <owl:Class rdf:about="http:/uu.nl/CoursesPerPeriod4">
+        <rdfs:subClassOf rdf:resource="http:/uu.nl/Course"/>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/Day -->
+
+    <owl:Class rdf:about="http:/uu.nl/Day">
+        <rdfs:label>Day</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/Lecturer -->
+
+    <owl:Class rdf:about="http:/uu.nl/Lecturer">
+        <rdfs:subClassOf rdf:resource="http:/uu.nl/Person"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/teaches"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/CoursesPerPeriod1"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/teaches"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/CoursesPerPeriod2"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/teaches"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/CoursesPerPeriod3"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/teaches"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/CoursesPerPeriod4"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:label>Lecturer</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/Person -->
+
+    <owl:Class rdf:about="http:/uu.nl/Person">
+        <rdfs:label>Person</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/PreferredCourse -->
+
+    <owl:Class rdf:about="http:/uu.nl/PreferredCourse">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/isOn"/>
+                        <owl:someValuesFrom>
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="http:/uu.nl/Topic"/>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="http:/uu.nl/topicPreferredBy"/>
+                                        <owl:someValuesFrom rdf:resource="http:/uu.nl/Student"/>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/taughtBy"/>
+                        <owl:someValuesFrom>
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="http:/uu.nl/Lecturer"/>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="http:/uu.nl/lecturerPreferredBy"/>
+                                        <owl:someValuesFrom rdf:resource="http:/uu.nl/Student"/>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/taughtOn"/>
+                        <owl:someValuesFrom>
+                            <owl:Class>
+                                <owl:intersectionOf rdf:parseType="Collection">
+                                    <rdf:Description rdf:about="http:/uu.nl/Day"/>
+                                    <owl:Restriction>
+                                        <owl:onProperty rdf:resource="http:/uu.nl/dayPreferredBy"/>
+                                        <owl:someValuesFrom rdf:resource="http:/uu.nl/Student"/>
+                                    </owl:Restriction>
+                                </owl:intersectionOf>
+                            </owl:Class>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:unionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http:/uu.nl/coursePreferredBy"/>
+                <owl:someValuesFrom rdf:resource="http:/uu.nl/Student"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label>PreferredCourse</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/Prerequisite -->
+
+    <owl:Class rdf:about="http:/uu.nl/Prerequisite">
+        <rdfs:subClassOf rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http:/uu.nl/isPrerequisite"/>
+                <owl:someValuesFrom rdf:resource="http:/uu.nl/Course"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label>Prerequisite</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/ResearchMethodology -->
+
+    <owl:Class rdf:about="http:/uu.nl/ResearchMethodology">
+        <rdfs:label>ResearchMethodology</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/Student -->
+
+    <owl:Class rdf:about="http:/uu.nl/Student">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/takes"/>
+                        <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/CoursesPerPeriod1"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/takes"/>
+                        <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/CoursesPerPeriod2"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/takes"/>
+                        <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/CoursesPerPeriod3"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/takes"/>
+                        <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/CoursesPerPeriod4"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/takes"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">3</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/CoursesPerPeriod1"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/takes"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">3</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/CoursesPerPeriod2"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/takes"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">3</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/CoursesPerPeriod3"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http:/uu.nl/takes"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">3</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http:/uu.nl/CoursesPerPeriod4"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http:/uu.nl/Person"/>
+        <rdfs:label>Student</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/Subtopic -->
+
+    <owl:Class rdf:about="http:/uu.nl/Subtopic">
+        <rdfs:subClassOf rdf:resource="http:/uu.nl/Topic"/>
+        <rdfs:label>Subtopic</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- http:/uu.nl/Topic -->
+
+    <owl:Class rdf:about="http:/uu.nl/Topic">
+        <rdfs:label>Topic</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http:/uu.nl/AccelerationStructures -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/AccelerationStructures">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+        <uu:isSubtopicOf rdf:resource="http:/uu.nl/PathTracing"/>
+        <uu:isSubtopicOf rdf:resource="http:/uu.nl/RayTracing"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AccelerationStructures</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/BasicMathematics -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/BasicMathematics">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+        <uu:isSubtopicOf rdf:resource="http:/uu.nl/Optimisation"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BasicMathematics</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/BusinessIntelligence -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/BusinessIntelligence">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:uses rdf:resource="http:/uu.nl/SecondaryDataAnalysis"/>
+        <rdfs:label>BusinessIntelligence</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Caching -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Caching">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+        <uu:isSubtopicOf rdf:resource="http:/uu.nl/Optimisation"/>
+        <rdfs:label>Caching</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/ComputerSystems -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/ComputerSystems">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/ComputerVision -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/ComputerVision">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Optimisation"/>
+        <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
+        <rdfs:label>ComputerVision</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/CoursesPerPeriod1 -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/CoursesPerPeriod1"/>
+    
+
+
+    <!-- http:/uu.nl/CoursesPerPeriod2 -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/CoursesPerPeriod2"/>
+    
+
+
+    <!-- http:/uu.nl/CoursesPerPeriod3 -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/CoursesPerPeriod3"/>
+    
+
+
+    <!-- http:/uu.nl/CoursesPerPeriod4 -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/CoursesPerPeriod4"/>
+    
+
+
+    <!-- http:/uu.nl/CrowdSimulation -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/CrowdSimulation">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Optimisation"/>
+        <uu:uses rdf:resource="http:/uu.nl/Simulation"/>
+        <rdfs:label>CrowdSimulation</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/DatabaseSystems -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/DatabaseSystems">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+        <uu:isSubtopicOf rdf:resource="http:/uu.nl/Systems"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/DigitalEthics -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/DigitalEthics">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Marketing"/>
+        <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
+        <rdfs:label>DigitalEthics</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Friday -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Friday">
+        <rdf:type rdf:resource="http:/uu.nl/Day"/>
+        <rdfs:label>Friday</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/GameDesign -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/GameDesign">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/GameTheory"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Marketing"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Optimisation"/>
+        <uu:isOn rdf:resource="http:/uu.nl/PathTracing"/>
+        <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
+        <rdfs:label>GameDesign</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/GameTheory -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/GameTheory">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+        <rdfs:label>GameTheory</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Graphics -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Graphics">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Optimisation"/>
+        <uu:isOn rdf:resource="http:/uu.nl/PathTracing"/>
+        <uu:isOn rdf:resource="http:/uu.nl/RayTracing"/>
+        <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AdvancedGraphics</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/IntelligentAgents -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/IntelligentAgents">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Monday"/>
+        <uu:uses rdf:resource="http:/uu.nl/Simulation"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IntelligentAgents</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/IntroductionToNaturalSciences -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/IntroductionToNaturalSciences">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Systems"/>
+        <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IntroductiontoNaturalSciences</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Lecturer1 -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Lecturer1">
+        <rdf:type rdf:resource="http:/uu.nl/Lecturer"/>
+        <uu:first_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Harry</uu:first_name>
+        <uu:last_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Potter</uu:last_name>
+        <uu:staff_ID rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">100</uu:staff_ID>
+        <rdfs:label>Lecturer1</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Lecturer2 -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Lecturer2">
+        <rdf:type rdf:resource="http:/uu.nl/Lecturer"/>
+        <uu:teaches rdf:resource="http:/uu.nl/MachineLearning"/>
+        <uu:first_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">John</uu:first_name>
+        <uu:last_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mol</uu:last_name>
+        <uu:staff_ID rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">200</uu:staff_ID>
+        <rdfs:label>Lecturer2</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Logic -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Logic">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+        <rdfs:label>Logic</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/LogicAndComputation -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/LogicAndComputation">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
+        <uu:uses rdf:resource="http:/uu.nl/Theory"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/LogicAndLanguage -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/LogicAndLanguage">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:uses rdf:resource="http:/uu.nl/Theory"/>
+        <rdfs:label>LogicAndLanguage</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/MachineLearning -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/MachineLearning">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/BasicMathematics"/>
+        <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
+        <rdfs:label>MachineLearning</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Marketing -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Marketing">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+        <rdfs:label>Marketing</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Mathematics -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Mathematics">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/BasicMathematics"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
+        <uu:uses rdf:resource="http:/uu.nl/Theory"/>
+        <rdfs:label>Mathematics</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Mixed -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Mixed">
+        <rdf:type rdf:resource="http:/uu.nl/ResearchMethodology"/>
+        <rdfs:label>Mixed</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/MobileInteraction -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/MobileInteraction">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:uses rdf:resource="http:/uu.nl/Surveys"/>
+        <rdfs:label>MobileInteraction</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Monday -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Monday">
+        <rdf:type rdf:resource="http:/uu.nl/Day"/>
+        <rdfs:label>Monday</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Multi-AgentLearning -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Multi-AgentLearning">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
+        <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
+        <rdfs:label>Multi-AgentLearning</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Multi-AgentSystems -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Multi-AgentSystems">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/ComputerSystems"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
+        <uu:uses rdf:resource="http:/uu.nl/Simulation"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Multi-AgentSystems</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/NaturalLanguageProcessing -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/NaturalLanguageProcessing">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:uses rdf:resource="http:/uu.nl/Theory"/>
+        <rdfs:label>NaturalLanguageProcessing</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Optimisation -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Optimisation">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/PathTracing -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/PathTracing">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PathTracing</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/RayTracing -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/RayTracing">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RayTracing</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/ResearchInternshipAI -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/ResearchInternshipAI">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
+        <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
+        <rdfs:label>ResearchInternshipAI</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/SecondaryDataAnalysis -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/SecondaryDataAnalysis">
+        <rdf:type rdf:resource="http:/uu.nl/ResearchMethodology"/>
+        <rdfs:label>Secondary Data Analysis</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Simulation -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Simulation">
+        <rdf:type rdf:resource="http:/uu.nl/ResearchMethodology"/>
+        <rdfs:label>Simulation</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Statistics -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Statistics">
+        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <uu:isOn rdf:resource="http:/uu.nl/BasicMathematics"/>
+        <uu:uses rdf:resource="http:/uu.nl/SecondaryDataAnalysis"/>
+        <rdfs:label>Statistics</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Student1 -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Student1">
+        <rdf:type rdf:resource="http:/uu.nl/Student"/>
+        <uu:prefersDay rdf:resource="http:/uu.nl/Monday"/>
+        <uu:takes rdf:resource="http:/uu.nl/IntelligentAgents"/>
+        <uu:takes rdf:resource="http:/uu.nl/Mathematics"/>
+        <uu:first_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Max</uu:first_name>
+        <uu:last_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Frings</uu:last_name>
+        <uu:student_ID rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">6979270</uu:student_ID>
+        <rdfs:label>Student1</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Student2 -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Student2">
+        <rdf:type rdf:resource="http:/uu.nl/Student"/>
+        <uu:prefersTopic rdf:resource="http:/uu.nl/BasicMathematics"/>
+        <uu:takes rdf:resource="http:/uu.nl/MachineLearning"/>
+        <uu:first_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lorenzo</uu:first_name>
+        <uu:last_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bini</uu:last_name>
+        <uu:student_ID rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2979280</uu:student_ID>
+        <rdfs:label>Student2</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Surveys -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Surveys">
+        <rdf:type rdf:resource="http:/uu.nl/ResearchMethodology"/>
+        <rdfs:label>Surveys</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Systems -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Systems">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+        <uu:isSubtopicOf rdf:resource="http:/uu.nl/ComputerSystems"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Theory -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Theory">
+        <rdf:type rdf:resource="http:/uu.nl/ResearchMethodology"/>
+        <rdfs:label>Theory</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Thursday -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Thursday">
+        <rdf:type rdf:resource="http:/uu.nl/Day"/>
+        <rdfs:label>Thursday</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Tuesday -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Tuesday">
+        <rdf:type rdf:resource="http:/uu.nl/Day"/>
+        <rdfs:label>Tuesday</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http:/uu.nl/Wednesday -->
+
+    <owl:NamedIndividual rdf:about="http:/uu.nl/Wednesday">
+        <rdf:type rdf:resource="http:/uu.nl/Day"/>
+        <rdfs:label>Wednesday</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotations
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description rdf:about="http:/uu.nl/CoursesPerPeriod1">
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CoursePerPeriod1</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http:/uu.nl/CoursesPerPeriod2">
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CoursePerPeriod2</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http:/uu.nl/CoursesPerPeriod3">
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CoursePerPeriod3</rdfs:label>
+    </rdf:Description>
+    <rdf:Description rdf:about="http:/uu.nl/CoursesPerPeriod4">
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CoursePerPeriod4</rdfs:label>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http:/uu.nl/BusinessIntelligence"/>
+            <rdf:Description rdf:about="http:/uu.nl/ComputerVision"/>
+            <rdf:Description rdf:about="http:/uu.nl/CrowdSimulation"/>
+            <rdf:Description rdf:about="http:/uu.nl/DigitalEthics"/>
+            <rdf:Description rdf:about="http:/uu.nl/GameDesign"/>
+            <rdf:Description rdf:about="http:/uu.nl/Graphics"/>
+            <rdf:Description rdf:about="http:/uu.nl/IntelligentAgents"/>
+            <rdf:Description rdf:about="http:/uu.nl/IntroductionToNaturalSciences"/>
+            <rdf:Description rdf:about="http:/uu.nl/LogicAndComputation"/>
+            <rdf:Description rdf:about="http:/uu.nl/LogicAndLanguage"/>
+            <rdf:Description rdf:about="http:/uu.nl/MachineLearning"/>
+            <rdf:Description rdf:about="http:/uu.nl/Mathematics"/>
+            <rdf:Description rdf:about="http:/uu.nl/MobileInteraction"/>
+            <rdf:Description rdf:about="http:/uu.nl/Multi-AgentLearning"/>
+            <rdf:Description rdf:about="http:/uu.nl/Multi-AgentSystems"/>
+            <rdf:Description rdf:about="http:/uu.nl/NaturalLanguageProcessing"/>
+            <rdf:Description rdf:about="http:/uu.nl/ResearchInternshipAI"/>
+            <rdf:Description rdf:about="http:/uu.nl/Statistics"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+

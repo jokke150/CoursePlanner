@@ -6,8 +6,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class CoursePlanner {
+	public static final String ONTOLOGY_PATH = "ontology/CoursePlanner.owl";
 
 	public static void main(final String[] args) throws IOException {
 		System.out.println("Hello World");
@@ -18,7 +20,7 @@ public class CoursePlanner {
 		final List<String> preferredTopics = askForPreferredTopics(reader);
 		final List<String> preferredLecturers = askForPreferredLecturers(reader);
 		final List<String> preferredDays = askForPreferredDays(reader);
-		
+
 		final short friendsImportance;
 		final short coursesImportance;
 		final short topicsImportance;
@@ -32,16 +34,17 @@ public class CoursePlanner {
 		final String friends = reader.readLine();
 		return Arrays.asList(friends.split("[ ]*,[ ]*"));
 	}
-	
+
 	private static List<String> askForFriendsImportance(final BufferedReader reader) throws IOException {
 		// TODO: Query range and validate
 		System.out.println("How important is it to you that you take the courses your friends take? (Scale 1-10): ");
-		final short friends = reader.readLine();
+		final String friends = reader.readLine();
 		return Arrays.asList(friends.split("[ ]*,[ ]*"));
 	}
 
 	private static List<String> askForPreferredCourses(final BufferedReader reader) throws IOException {
 		// TODO: Query range and validate
+		final Set<String> students
 		System.out.println("Please enter your preferred courses (comma-separated): ");
 		final String courses = reader.readLine();
 		return Arrays.asList(courses.split("[ ]*,[ ]*"));
