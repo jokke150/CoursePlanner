@@ -46,7 +46,7 @@ public class CoursePlanner {
 
 	private static List<String> askForPreferredCourses(final BufferedReader reader) throws IOException {
 		// TODO: Query range and validate
-		final Set<String> students = QueryEngine
+		//final Set<String> students = QueryEngine
 		System.out.println("Please enter your preferred courses (comma-separated): ");
 		final String courses = reader.readLine();
 		return Arrays.asList(courses.split("[ ]*,[ ]*"));
