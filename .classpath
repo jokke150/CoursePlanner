@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="lib/automaton-1.11-8.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/caffeine-1.0.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-io-2.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-rdf-api-0.5.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/google-collections-1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/guava-18.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hppcrt-0.7.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/javax.inject-1.jar"/>
@@ -39,5 +38,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.7.25.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.7.26.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-simple-1.7.26.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/google-collections-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
