@@ -24,6 +24,11 @@ public class Agent {
 
 	public List<CoursePlan> getBestCoursePlans()
 			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
+		return getBestCoursePlans(new CoursePlan());
+	}
+
+	private List<CoursePlan> getBestCoursePlans(final CoursePlan coursePlan)
+			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
 		final int util = 0;
 
 		// 1. For each period query the available courses
