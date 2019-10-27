@@ -22,6 +22,27 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#comprisesCourse -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#comprisesCourse">
+        <owl:inverseOf rdf:resource="http:/uu.nl/taughtOn"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Day"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Course"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#isParentTopicOf -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#isParentTopicOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http:/uu.nl/isSubtopicOf"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Topic"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Topic"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#preferredBy -->
 
     <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#preferredBy">
@@ -78,6 +99,7 @@
     <!-- http:/uu.nl/isOn -->
 
     <owl:ObjectProperty rdf:about="http:/uu.nl/isOn">
+        <owl:inverseOf rdf:resource="http:/uu.nl/taughtIn"/>
         <rdfs:domain rdf:resource="http:/uu.nl/Course"/>
         <rdfs:range rdf:resource="http:/uu.nl/Topic"/>
         <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">isOn</rdfs:label>
@@ -184,7 +206,8 @@
     <!-- http:/uu.nl/taughtIn -->
 
     <owl:ObjectProperty rdf:about="http:/uu.nl/taughtIn">
-        <rdfs:domain rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Topic"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Course"/>
         <rdfs:label>taughtIn</rdfs:label>
     </owl:ObjectProperty>
     
@@ -636,6 +659,15 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#DescriptionLogic -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#DescriptionLogic">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+        <uu:isSubtopicOf rdf:resource="http:/uu.nl/Logic"/>
+    </owl:NamedIndividual>
     
 
 
