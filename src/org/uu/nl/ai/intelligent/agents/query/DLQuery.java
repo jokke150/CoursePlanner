@@ -1,4 +1,4 @@
-package org.uu.nl.ai.intelligent.agents;
+package org.uu.nl.ai.intelligent.agents.query;
 
 import java.io.IOException;
 import java.nio.file.Files;
