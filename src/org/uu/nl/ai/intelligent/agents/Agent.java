@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.uu.nl.ai.intelligent.agents.data.CoursePlan;
@@ -62,45 +63,71 @@ public class Agent {
 			coursesInPeriods.add(coursesInPeriod);
 		}
 
-		for (int period = coursePlan.getFirstIncompletePeriod(); period <= PERIODS.size(); period++) {
+		for (final int period = coursePlan.getFirstIncompletePeriod(); period <= PERIODS.size(); period++) {
 			final Set<String> coursesInPeriod = coursesInPeriods.get(period - 1);
 
 			final SortedMap<Integer, Set<String>> coursesByUtility = getCoursesByUtility(coursesInPeriod);
 			for (final Entry<Integer, Set<String>> coursesByUtilityEntry : coursesByUtility.entrySet()) {
 				final int utility = coursesByUtilityEntry.getKey();
-				// TODO: Check for prerequisites differently and branch if it is feasible to
-				// take one in a previous period
+				final Set<String> courses = coursesByUtilityEntry.getValue();
 
 				// A student cannot register for a course more than once.
-				final Set<String> coursesNotAlreadyTaken = filterOutCoursesAlreadyTaken(
-						coursesByUtilityEntry.getValue(), coursePlan);
+				final Set<String> coursesAlreadyTaken = getCoursesAlreadyTaken();
+
+				final Set<String> coursesNotAlreadyTaken = courses.stream()
+						.filter(i -> !coursesAlreadyTaken.contains(i)).collect(Collectors.toSet());
+
+				final Set<String> coursesAlreadyPlanned = coursePlan.getAllCourses(); // TODO: Up until certain period?
 
 				final Map<String, Set<String>> prerequisitesByCourse = getPrerequisitesByCourse(coursesNotAlreadyTaken);
 
-				final Set<String> validCoursesForUtility = getValidCoursesForUtility(coursesByUtilityEntry.getValue(),
-						coursePlan);
+				final Set<String> validCourses = getValidCourses(coursesNotAlreadyTaken, coursesAlreadyTaken,
+						coursesAlreadyPlanned, prerequisitesByCourse);
 
-				// TODO: Check if unmet prerequisites can be met by taking courses in previous
-				// periods -> if so, branch!
+				if (validCourses.size() > 1) {
+					// When a student has an option between two courses that are equally
+					// preferable, the student would like to take a course that her friend takes.
 
-				for (final String course : validCoursesForUtility) {
+					// Assumption: The more friends take a course the more preferable it is
+					// TODO: Correct? If yes, include in report!
 
-					if (validCoursesForUtility.size() > 1) {
-						// When a student has an option between two courses that are equally
-						// preferable, the student would like to take a course that her friend takes.
-
-						// Assumption: The more friends take a course the more preferable it is
-						// TODO: Correct? If yes, include in report!
-
-						final int numOfFriendsTakingCourse = getNumOfFriendsTakingCourse(course);
-
-						// TODO: branch if same utility and same numOfFriends
-						// bestCoursePlans.addAll(getBestCoursePlans(coursePlan));
+					final SortedMap<Integer, Set<String>> coursesByNumOfFriends = new TreeMap<>();
+					// gather coursesByNumOfFriends
+					for (final String course : validCourses) {
+						final int numOfFriends = getNumOfFriendsTakingCourse(course);
+						Set<String> coursesForNumOfFriends;
+						if (coursesByNumOfFriends.containsKey(numOfFriends)) {
+							coursesForNumOfFriends = coursesByNumOfFriends.get(numOfFriends);
+						} else {
+							coursesForNumOfFriends = new HashSet<>();
+						}
+						coursesForNumOfFriends.add(course);
 					}
 
-					coursePlan.addCourseInPeriod(course, period, utility);
+					final int highestNumOfFriends = coursesByNumOfFriends.lastKey();
+					if (coursesByNumOfFriends.get(highestNumOfFriends).size() > 1) {
+
+					} else {
+						coursePlan.addCourseInPeriod(coursesByNumOfFriends.get(highestNumOfFriends).iterator().next(),
+								period, utility);
+					}
+
+				} else {
+					coursePlan.addCourseInPeriod(validCourses.iterator().next(), period, utility);
+				}
+
+				for (final String course : courses) {
+					// TODO: Course offered in multiple periods? check if utility is higher if we
+					// switch out
+
+//					!hasTakenPrerequisites(prerequisitesByCourse.get(course), coursesAlreadyTaken)) {
+					// TODO: Check for prerequisites differently and branch if it is feasible to
+					// take one in a previous period
+					// TODO: Check if unmet prerequisites can be met by taking courses in previous
+					// periods -> if so, branch!
 				}
 			}
+
 		}
 
 		// 2. Calculate utility taking into account preference and previous periods
@@ -208,19 +235,12 @@ public class Agent {
 		return allParentTopics;
 	}
 
-	private Set<String> filterOutCoursesAlreadyTaken(final Set<String> courses, final CoursePlan coursePlan)
+	private Set<String> getCoursesAlreadyTaken()
 			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
-		final Set<String> coursesTakenByStudent = QueryEngine.getInstance()
+		final Set<String> coursesAlreadyTaken = QueryEngine.getInstance()
 				.getInstancesShortForm("hasBeenTakenBy value + " + this.student, false);
-		coursesTakenByStudent.addAll(coursePlan.getAllCourses());
 
-		final Set<String> coursesNotAlreadyTaken = new HashSet<>();
-		for (final String course : courses) {
-			if (!coursesTakenByStudent.contains(course)) {
-				coursesNotAlreadyTaken.add(course);
-			}
-		}
-		return coursesNotAlreadyTaken;
+		return coursesAlreadyTaken;
 	}
 
 	private Map<String, Set<String>> getPrerequisitesByCourse(final Set<String> courses)
@@ -234,20 +254,18 @@ public class Agent {
 		return prerequisitesByCourse;
 	}
 
-	private Set<String> getValidCoursesForUtility(final Set<String> courses, final CoursePlan coursePlan)
+	private Set<String> getValidCourses(final Set<String> coursesNotAlreadyTaken, final Set<String> coursesAlreadyTaken,
+			final Set<String> coursesAlreadyPlanned, final Map<String, Set<String>> prerequisitesByCourse)
 			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
-		final Set<String> coursesTakenByStudent = QueryEngine.getInstance()
-				.getInstancesShortForm("hasBeenTakenBy value + " + this.student, false);
-		coursesTakenByStudent.addAll(coursePlan.getAllCourses());
 
-		final Set<String> validCoursesForUtility = new HashSet<>();
-		for (final String course : courses) {
-			if (!coursesTakenByStudent.contains(course) // A student cannot register for a course more than once.
-					&& hasTakenPrerequisites(coursesTakenByStudent, course)) {
-				validCoursesForUtility.add(course);
+		final Set<String> validCourses = new HashSet<>();
+		for (final String course : coursesNotAlreadyTaken) {
+			if (!coursesAlreadyPlanned.contains(course) // Student can only take a course once
+					&& hasTakenPrerequisites(prerequisitesByCourse.get(course), coursesAlreadyTaken)) {
+				validCourses.add(course);
 			}
 		}
-		return validCoursesForUtility;
+		return validCourses;
 	}
 
 	private int getNumOfFriendsTakingCourse(final String course)
@@ -265,20 +283,13 @@ public class Agent {
 		return friendsTakingCourse.size();
 	}
 
-	// TODO: Keep?
-	private Set<String> getCoursePrerequisites(final String course)
+	private boolean hasTakenPrerequisites(final Set<String> coursePrerequisites,
+			final Set<String> coursesTakenByStudent)
 			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
-		return QueryEngine.getInstance().getInstancesShortForm("hasPrerequisite value " + course, false);
-	}
 
-	private boolean hasTakenPrerequisites(final Set<String> coursesTakenByStudent, final String course)
-			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
-		final Set<String> coursePrerequisites = QueryEngine.getInstance()
-				.getInstancesShortForm("hasPrerequisite value " + course, false);
-
-		// If the student took courses similar to a prerequisite that it also acceptable
 		for (final String coursePrerequisite : coursePrerequisites) {
 			if (!coursesTakenByStudent.contains(coursePrerequisite)) {
+				// If the student took courses similar to a prerequisite that it also acceptable
 				int similarity = 0;
 				for (final String courseTakenByStudent : coursesTakenByStudent) {
 					similarity = getSimilarity(coursePrerequisite, courseTakenByStudent);
