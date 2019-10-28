@@ -32,6 +32,26 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#hasBeenTakenBy -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#hasBeenTakenBy">
+        <owl:inverseOf rdf:resource="http:/uu.nl/hasTaken"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Student"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#hasFriend -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#hasFriend">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Person"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Person"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#hasPrerequisite -->
 
     <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#hasPrerequisite">
