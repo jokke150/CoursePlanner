@@ -63,6 +63,15 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#houses -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#houses">
+        <owl:inverseOf rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#locatedIn"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#isParentTopicOf -->
 
     <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#isParentTopicOf">
@@ -70,6 +79,14 @@
         <owl:inverseOf rdf:resource="http:/uu.nl/isSubtopicOf"/>
         <rdfs:domain rdf:resource="http:/uu.nl/Topic"/>
         <rdfs:range rdf:resource="http:/uu.nl/Topic"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#locatedIn -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#locatedIn">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
     </owl:ObjectProperty>
     
 
@@ -87,6 +104,16 @@
 
     <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#prefers">
         <rdfs:domain rdf:resource="http:/uu.nl/Student"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#takenBy -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#takenBy">
+        <owl:inverseOf rdf:resource="http:/uu.nl/takes"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Student"/>
     </owl:ObjectProperty>
     
 
@@ -353,6 +380,18 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Building -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Building"/>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Classroom -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Classroom"/>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PreferringStudent -->
 
     <owl:Class rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PreferringStudent">
@@ -382,6 +421,12 @@
         </owl:equivalentClass>
         <rdfs:subClassOf rdf:resource="http:/uu.nl/Student"/>
     </owl:Class>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#UniversityComplex -->
+
+    <owl:Class rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#UniversityComplex"/>
     
 
 
@@ -694,11 +739,63 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#CenterLibrary -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#CenterLibrary">
+        <rdf:type rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Building"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Neude"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#DescriptionLogic -->
 
     <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#DescriptionLogic">
         <rdf:type rdf:resource="http:/uu.nl/Topic"/>
         <uu:isSubtopicOf rdf:resource="http:/uu.nl/Logic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N2 -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N2">
+        <rdf:type rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Classroom"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#CenterLibrary"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Neude -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Neude">
+        <rdf:type rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#UniversityComplex"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T1 -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T1">
+        <rdf:type rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Classroom"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Technoplex"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Technoplex -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Technoplex">
+        <rdf:type rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Building"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Uithof"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Uithof -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Uithof">
+        <rdf:type rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#UniversityComplex"/>
     </owl:NamedIndividual>
     
 
@@ -831,6 +928,7 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/GameDesign">
         <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T1"/>
         <uu:isOn rdf:resource="http:/uu.nl/GameTheory"/>
         <uu:isOn rdf:resource="http:/uu.nl/Marketing"/>
         <uu:isOn rdf:resource="http:/uu.nl/Optimisation"/>
@@ -945,6 +1043,7 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/MachineLearning">
         <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N2"/>
         <uu:isOn rdf:resource="http:/uu.nl/BasicMathematics"/>
         <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
         <rdfs:label>MachineLearning</rdfs:label>
@@ -1121,6 +1220,7 @@
     <owl:NamedIndividual rdf:about="http:/uu.nl/Student2">
         <rdf:type rdf:resource="http:/uu.nl/Student"/>
         <uu:prefersTopic rdf:resource="http:/uu.nl/BasicMathematics"/>
+        <uu:takes rdf:resource="http:/uu.nl/GameDesign"/>
         <uu:takes rdf:resource="http:/uu.nl/MachineLearning"/>
         <uu:first_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lorenzo</uu:first_name>
         <uu:last_name rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bini</uu:last_name>
