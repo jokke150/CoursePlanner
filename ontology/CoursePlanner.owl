@@ -32,6 +32,17 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#hasPrerequisite -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#hasPrerequisite">
+        <owl:inverseOf rdf:resource="http:/uu.nl/isPrerequisite"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Course"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Prerequisite"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#isParentTopicOf -->
 
     <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#isParentTopicOf">
@@ -112,6 +123,7 @@
     <owl:ObjectProperty rdf:about="http:/uu.nl/isPrerequisite">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/Course"/>
         <rdfs:domain rdf:resource="http:/uu.nl/Prerequisite"/>
         <rdfs:range rdf:resource="http:/uu.nl/Course"/>
         <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">isPrerequisite</rdfs:label>
