@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
@@ -49,14 +51,19 @@ public class Agent {
 		// 3. A course is offered in multiple different periods, create a course plan
 		// for all scenarios
 
+		// TODO: Check if a similar branch already exists
+
 		final List<CoursePlan> coursePlans = new ArrayList<>();
 
-		for (int period = coursePlan.getFirstIncompletePeriod(); period <= PERIODS.size(); period++) {
-			// 1. For each period query the available courses
-			final Set<String> coursesInPeriod = QueryEngine.getInstance().getInstancesShortForm(PERIODS.get(period),
-					false);
+		// For each period query the available courses
+		final List<Set<String>> coursesInPeriods = new ArrayList<>();
+		for (final String period : PERIODS) {
+			final Set<String> coursesInPeriod = QueryEngine.getInstance().getInstancesShortForm(period, false);
+			coursesInPeriods.add(coursesInPeriod);
+		}
 
-			// TODO: A student cannot register for a course more than once.
+		for (int period = coursePlan.getFirstIncompletePeriod(); period <= PERIODS.size(); period++) {
+			final Set<String> coursesInPeriod = coursesInPeriods.get(period - 1);
 
 			final SortedMap<Integer, Set<String>> coursesByUtility = getCoursesByUtility(coursesInPeriod);
 			for (final Entry<Integer, Set<String>> coursesByUtilityEntry : coursesByUtility.entrySet()) {
@@ -64,8 +71,17 @@ public class Agent {
 				// TODO: Check for prerequisites differently and branch if it is feasible to
 				// take one in a previous period
 
+				// A student cannot register for a course more than once.
+				final Set<String> coursesNotAlreadyTaken = filterOutCoursesAlreadyTaken(
+						coursesByUtilityEntry.getValue(), coursePlan);
+
+				final Map<String, Set<String>> prerequisitesByCourse = getPrerequisitesByCourse(coursesNotAlreadyTaken);
+
 				final Set<String> validCoursesForUtility = getValidCoursesForUtility(coursesByUtilityEntry.getValue(),
 						coursePlan);
+
+				// TODO: Check if unmet prerequisites can be met by taking courses in previous
+				// periods -> if so, branch!
 
 				for (final String course : validCoursesForUtility) {
 
@@ -192,6 +208,32 @@ public class Agent {
 		return allParentTopics;
 	}
 
+	private Set<String> filterOutCoursesAlreadyTaken(final Set<String> courses, final CoursePlan coursePlan)
+			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
+		final Set<String> coursesTakenByStudent = QueryEngine.getInstance()
+				.getInstancesShortForm("hasBeenTakenBy value + " + this.student, false);
+		coursesTakenByStudent.addAll(coursePlan.getAllCourses());
+
+		final Set<String> coursesNotAlreadyTaken = new HashSet<>();
+		for (final String course : courses) {
+			if (!coursesTakenByStudent.contains(course)) {
+				coursesNotAlreadyTaken.add(course);
+			}
+		}
+		return coursesNotAlreadyTaken;
+	}
+
+	private Map<String, Set<String>> getPrerequisitesByCourse(final Set<String> courses)
+			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
+		final Map<String, Set<String>> prerequisitesByCourse = new HashMap<>();
+		for (final String course : courses) {
+			final Set<String> coursePrerequisites = QueryEngine.getInstance()
+					.getInstancesShortForm("hasPrerequisite value " + course, false);
+			prerequisitesByCourse.put(course, coursePrerequisites);
+		}
+		return prerequisitesByCourse;
+	}
+
 	private Set<String> getValidCoursesForUtility(final Set<String> courses, final CoursePlan coursePlan)
 			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
 		final Set<String> coursesTakenByStudent = QueryEngine.getInstance()
@@ -200,7 +242,8 @@ public class Agent {
 
 		final Set<String> validCoursesForUtility = new HashSet<>();
 		for (final String course : courses) {
-			if (!coursesTakenByStudent.contains(course) && hasTakenPrerequisites(coursesTakenByStudent, course)) {
+			if (!coursesTakenByStudent.contains(course) // A student cannot register for a course more than once.
+					&& hasTakenPrerequisites(coursesTakenByStudent, course)) {
 				validCoursesForUtility.add(course);
 			}
 		}
@@ -220,6 +263,12 @@ public class Agent {
 		friendsTakingCourse.retainAll(friends);
 
 		return friendsTakingCourse.size();
+	}
+
+	// TODO: Keep?
+	private Set<String> getCoursePrerequisites(final String course)
+			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
+		return QueryEngine.getInstance().getInstancesShortForm("hasPrerequisite value " + course, false);
 	}
 
 	private boolean hasTakenPrerequisites(final Set<String> coursesTakenByStudent, final String course)
@@ -254,8 +303,6 @@ public class Agent {
 	 */
 	private int getSimilarity(final String course1, final String course2)
 			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
-		//
-
 		final QueryEngine queryEngine = QueryEngine.getInstance();
 
 		final String researchMethod1 = queryEngine.getInstancesShortForm("isUsedIn value " + course1, false).iterator()
