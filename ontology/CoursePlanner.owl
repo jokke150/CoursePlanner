@@ -74,6 +74,16 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#isUsedIn -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#isUsedIn">
+        <owl:inverseOf rdf:resource="http:/uu.nl/uses"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/ResearchMethodology"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Course"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#preferredBy -->
 
     <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#preferredBy">
