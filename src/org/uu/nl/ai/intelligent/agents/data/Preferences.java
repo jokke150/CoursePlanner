@@ -14,8 +14,8 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.uu.nl.ai.intelligent.agents.query.QueryEngine;
 
 public class Preferences {
-	private static final short MIN_RATING = 1;
-	private static final short MAX_RATING = 10;
+	private static final int MIN_RATING = 1;
+	private static final int MAX_RATING = 10;
 
 	private final BufferedReader reader;
 
@@ -24,24 +24,50 @@ public class Preferences {
 	private Set<String> preferredLecturers;
 	private Set<String> preferredDays;
 
-	private short preferredCoursesWeight;
-	private short preferredTopicsWeight;
-	private short preferredLecturersWeight;
-	private short preferredDaysWeight;
+	private int preferredCoursesWeight;
+	private int preferredTopicsWeight;
+	private int preferredLecturersWeight;
+	private int preferredDaysWeight;
 
 	private Set<String> dislikedCourses;
 	private Set<String> dislikedTopics;
 	private Set<String> dislikedLecturers;
 	private Set<String> dislikedDays;
 
-	private short dislikedCoursesWeight;
-	private short dislikedTopicsWeight;
-	private short dislikedLecturersWeight;
-	private short dislikedDaysWeight;
+	private int dislikedCoursesWeight;
+	private int dislikedTopicsWeight;
+	private int dislikedLecturersWeight;
+	private int dislikedDaysWeight;
 
 	public Preferences(final BufferedReader reader) {
 		super();
 		this.reader = reader;
+	}
+
+	public Preferences(final Set<String> preferredCourses, final Set<String> preferredTopics,
+			final Set<String> preferredLecturers, final Set<String> preferredDays, final int preferredCoursesWeight,
+			final int preferredTopicsWeight, final int preferredLecturersWeight, final int preferredDaysWeight,
+			final Set<String> dislikedCourses, final Set<String> dislikedTopics, final Set<String> dislikedLecturers,
+			final Set<String> dislikedDays, final int dislikedCoursesWeight, final int dislikedTopicsWeight,
+			final int dislikedLecturersWeight, final int dislikedDaysWeight) {
+		super();
+		this.reader = null;
+		this.preferredCourses = preferredCourses;
+		this.preferredTopics = preferredTopics;
+		this.preferredLecturers = preferredLecturers;
+		this.preferredDays = preferredDays;
+		this.preferredCoursesWeight = preferredCoursesWeight;
+		this.preferredTopicsWeight = preferredTopicsWeight;
+		this.preferredLecturersWeight = preferredLecturersWeight;
+		this.preferredDaysWeight = preferredDaysWeight;
+		this.dislikedCourses = dislikedCourses;
+		this.dislikedTopics = dislikedTopics;
+		this.dislikedLecturers = dislikedLecturers;
+		this.dislikedDays = dislikedDays;
+		this.dislikedCoursesWeight = dislikedCoursesWeight;
+		this.dislikedTopicsWeight = dislikedTopicsWeight;
+		this.dislikedLecturersWeight = dislikedLecturersWeight;
+		this.dislikedDaysWeight = dislikedDaysWeight;
 	}
 
 	public Set<String> getPreferredCourses() {
@@ -60,19 +86,19 @@ public class Preferences {
 		return this.preferredDays;
 	}
 
-	public short getPreferredCoursesWeight() {
+	public int getPreferredCoursesWeight() {
 		return this.preferredCoursesWeight;
 	}
 
-	public short getPreferredTopicsWeight() {
+	public int getPreferredTopicsWeight() {
 		return this.preferredTopicsWeight;
 	}
 
-	public short getPreferredLecturersWeight() {
+	public int getPreferredLecturersWeight() {
 		return this.preferredLecturersWeight;
 	}
 
-	public short getPreferredDaysWeight() {
+	public int getPreferredDaysWeight() {
 		return this.preferredDaysWeight;
 	}
 
@@ -92,19 +118,19 @@ public class Preferences {
 		return this.dislikedDays;
 	}
 
-	public short getDislikedCoursesWeight() {
+	public int getDislikedCoursesWeight() {
 		return this.dislikedCoursesWeight;
 	}
 
-	public short getDislikedTopicsWeight() {
+	public int getDislikedTopicsWeight() {
 		return this.dislikedTopicsWeight;
 	}
 
-	public short getDislikedLecturersWeight() {
+	public int getDislikedLecturersWeight() {
 		return this.dislikedLecturersWeight;
 	}
 
-	public short getDislikedDaysWeight() {
+	public int getDislikedDaysWeight() {
 		return this.dislikedDaysWeight;
 	}
 
@@ -133,7 +159,7 @@ public class Preferences {
 		Set<String> dislikedCourses;
 		do {
 			System.out.println("Please enter your disliked courses (comma-separated): ");
-			printRange(courses.stream().filter(i -> this.preferredCourses.contains(i)).collect(Collectors.toSet()));
+			printRange(courses.stream().filter(i -> !this.preferredCourses.contains(i)).collect(Collectors.toSet()));
 			dislikedCourses = convertInput(this.reader.readLine());
 		} while (!isInputValid(dislikedCourses, courses, preferredCourses));
 		this.dislikedCourses = dislikedCourses;
@@ -160,7 +186,7 @@ public class Preferences {
 		Set<String> dislikedTopics;
 		do {
 			System.out.println("Please enter your disliked topics (comma-separated): ");
-			printRange(topics.stream().filter(i -> this.preferredTopics.contains(i)).collect(Collectors.toSet()));
+			printRange(topics.stream().filter(i -> !this.preferredTopics.contains(i)).collect(Collectors.toSet()));
 			dislikedTopics = convertInput(this.reader.readLine());
 		} while (!isInputValid(dislikedTopics, topics, preferredTopics));
 		this.dislikedTopics = dislikedTopics;
@@ -188,7 +214,8 @@ public class Preferences {
 		Set<String> dislikedLecturers;
 		do {
 			System.out.println("Please enter your disliked lecturers (comma-separated): ");
-			printRange(lecturers.stream().filter(i -> this.preferredLecturers.contains(i)).collect(Collectors.toSet()));
+			printRange(
+					lecturers.stream().filter(i -> !this.preferredLecturers.contains(i)).collect(Collectors.toSet()));
 			dislikedLecturers = convertInput(this.reader.readLine());
 		} while (!isInputValid(dislikedLecturers, lecturers, preferredLecturers));
 		this.dislikedLecturers = dislikedLecturers;
@@ -218,7 +245,7 @@ public class Preferences {
 		Set<String> dislikedDays;
 		do {
 			System.out.println("Please enter your disliked days (comma-separated): ");
-			printRange(days.stream().filter(i -> this.preferredDays.contains(i)).collect(Collectors.toSet()));
+			printRange(days.stream().filter(i -> !this.preferredDays.contains(i)).collect(Collectors.toSet()));
 			dislikedDays = convertInput(this.reader.readLine());
 		} while (!isInputValid(dislikedDays, days, preferredDays));
 		this.dislikedDays = dislikedDays;
@@ -229,11 +256,11 @@ public class Preferences {
 		this.dislikedDaysWeight = getWeightRating();
 	}
 
-	private short getWeightRating() throws IOException {
-		short weight = MIN_RATING - 1;
+	private int getWeightRating() throws IOException {
+		int weight = MIN_RATING - 1;
 		while (weight < MIN_RATING) {
 			try {
-				weight = Short.parseShort(this.reader.readLine());
+				weight = Integer.parseInt(this.reader.readLine());
 			} catch (final NumberFormatException exception) {
 				System.out.println("Input is not valid, please try again.");
 			}
