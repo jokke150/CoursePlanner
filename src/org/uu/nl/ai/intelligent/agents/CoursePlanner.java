@@ -50,6 +50,9 @@ public class CoursePlanner {
 				preferredDays, 3, 6, 5, 8, dislikedCourses, dislikedTopics, dislikedLecturers, dislikedDays, 7, 2, 1,
 				8);
 
+//		final Preferences preferences = new Preferences(reader);
+//		preferences.askForPreferences();
+
 		reader.close();
 
 		final Agent agent = new Agent(student, preferences);
