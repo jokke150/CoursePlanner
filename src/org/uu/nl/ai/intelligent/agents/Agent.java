@@ -74,8 +74,7 @@ public class Agent {
 					final Set<String> coursesNotAlreadyTaken = courses.stream()
 							.filter(i -> !coursesAlreadyTaken.contains(i)).collect(Collectors.toSet());
 
-					final Set<String> coursesAlreadyPlanned = coursePlan.getAllCourses(); // TODO: Up until certain
-																							// period?
+					final Set<String> coursesAlreadyPlanned = coursePlan.getAllCourses();
 
 					final Map<String, Set<String>> prerequisitesByCourse = getPrerequisitesByCourse(
 							coursesNotAlreadyTaken);
@@ -87,6 +86,7 @@ public class Agent {
 							final CoursePlan branch = CoursePlan.branchByRemovingCourse(coursePlan, course);
 							final Set<CoursePlan> alternativeCoursePlans = getBestCoursePlans(branch);
 							coursePlans.addAll(alternativeCoursePlans);
+							System.out.println("Branching by removing course " + course);
 						}
 
 						// Prerequisites not met? Branch if it is feasible to take them in previous
@@ -116,6 +116,7 @@ public class Agent {
 										prerequisiteDemands);
 								final Set<CoursePlan> alternativeCoursePlans = getBestCoursePlans(branch);
 								coursePlans.addAll(alternativeCoursePlans);
+								System.out.println("Branching by demanding prerequisites " + prerequisiteDemands);
 							}
 							// Skip course since its prerequisites cannot be met with this course plan
 							continue;
@@ -128,6 +129,7 @@ public class Agent {
 					if (validCourses.size() == 1) {
 						// Only one valid course
 						coursePlan.addCourseInPeriod(validCourses.iterator().next(), period, utility);
+						QueryEngine.getInstance().dumpInstancesShortFormCache();
 					} else if (validCourses.size() > 1) {
 						// Multiple valid courses
 
@@ -145,6 +147,7 @@ public class Agent {
 						final int highestNumOfFriends = coursesByNumOfFriends.lastKey();
 						coursePlan.addCourseInPeriod(coursesByNumOfFriends.get(highestNumOfFriends).iterator().next(),
 								period, utility);
+						QueryEngine.getInstance().dumpInstancesShortFormCache();
 
 //					if (coursesByNumOfFriends.get(highestNumOfFriends).size() == 1) {
 //						// Only one valid course with highest number of friends
@@ -272,6 +275,7 @@ public class Agent {
 		// TODO: Is the utility the same if the student prefers/dislikes only one versus
 		// multiple of the lecturers teaching the course?
 		final Set<String> courseLecturers = queryEngine.getInstancesShortForm("teaches value " + course, false);
+
 		if (preferredLecturers.stream().anyMatch(i -> courseLecturers.contains(i))) {
 			utility += this.preferences.getPreferredLecturersWeight();
 		}
@@ -282,6 +286,7 @@ public class Agent {
 		// TODO: Is the utility the same if the student prefers/dislikes only one versus
 		// multiple of the days the course is taught on?
 		final Set<String> courseDays = queryEngine.getInstancesShortForm("comprisesCourse value " + course, false);
+
 		if (preferredDays.stream().anyMatch(i -> courseDays.contains(i))) {
 			utility += this.preferences.getPreferredDaysWeight();
 		}

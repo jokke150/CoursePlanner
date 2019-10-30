@@ -15,9 +15,15 @@ import org.uu.nl.ai.intelligent.agents.query.QueryEngine;
 
 public class CoursePlanner {
 	public static final String ONTOLOGY_PATH = "ontology/CoursePlanner.owl";
+	public static final boolean READ_CACHE = true;
 
-	public static void main(final String[] args) throws IOException, OWLOntologyCreationException {
+	public static void main(final String[] args)
+			throws IOException, OWLOntologyCreationException, ClassNotFoundException {
 		System.out.println("Hello World");
+
+		if (READ_CACHE) {
+			QueryEngine.getInstance().readInstancesShortFormCache();
+		}
 
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -28,8 +34,9 @@ public class CoursePlanner {
 //		final Preferences preferences = new Preferences(reader);
 //		preferences.askForPreferences();
 
-		final Set<String> preferredCourses = Arrays.asList("MachineLearning", "LogicAndComputation").stream()
-				.collect(Collectors.toSet());
+		final Set<String> preferredCourses = Arrays.asList("IntroductiontoNaturalSciences", "IntelligentAgents",
+				"LogicAndLanguage", "MachineLearning", "LogicAndComputation", "Statistics", "NaturalLanguageProcessing",
+				"BusinessIntelligence", "ComputerVision").stream().collect(Collectors.toSet());
 		final Set<String> preferredTopics = Arrays.asList("DescriptionLogic", "Optimisation").stream()
 				.collect(Collectors.toSet());
 		final Set<String> preferredLecturers = Arrays.asList("Lecturer1").stream().collect(Collectors.toSet());

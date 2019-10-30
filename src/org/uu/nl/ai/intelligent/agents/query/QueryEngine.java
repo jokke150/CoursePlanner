@@ -1,11 +1,17 @@
 package org.uu.nl.ai.intelligent.agents.query;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,6 +37,8 @@ public class QueryEngine {
 	private final OWLReasoner reasoner;
 	private final QueryParser parser;
 	private final ShortFormProvider shortFormProvider;
+
+	private Map<String, Set<String>> instancesShortFormCache = new HashMap<>();
 
 	private QueryEngine() throws UnsupportedEncodingException, IOException, OWLOntologyCreationException {
 		// singleton
@@ -103,12 +111,37 @@ public class QueryEngine {
 	}
 
 	public Set<String> getInstancesShortForm(final String classExpressionString, final boolean direct) {
-		final Set<OWLNamedIndividual> instances = getInstances(classExpressionString, direct);
+		if (this.instancesShortFormCache.containsKey(classExpressionString)) {
+			System.out.println("Cache!");
+			return this.instancesShortFormCache.get(classExpressionString);
+		} else {
+			final Set<OWLNamedIndividual> instances = getInstances(classExpressionString, direct);
 
-		final Set<String> instancesShortForm = new HashSet<>();
-		instancesShortForm.addAll(
-				instances.stream().map(i -> this.shortFormProvider.getShortForm(i)).collect(Collectors.toSet()));
+			final Set<String> instancesShortForm = new HashSet<>();
+			instancesShortForm.addAll(
+					instances.stream().map(i -> this.shortFormProvider.getShortForm(i)).collect(Collectors.toSet()));
 
-		return instancesShortForm;
+			this.instancesShortFormCache.put(classExpressionString, instancesShortForm);
+
+			return instancesShortForm;
+		}
+
+	}
+
+	public void dumpInstancesShortFormCache() throws IOException {
+		final FileOutputStream fos = new FileOutputStream("cache.ser");
+		final ObjectOutputStream oos = new ObjectOutputStream(fos);
+		oos.writeObject(this.instancesShortFormCache);
+		oos.close();
+		fos.close();
+		System.out.println("Serialized Cache");
+	}
+
+	public void readInstancesShortFormCache() throws ClassNotFoundException, IOException {
+		final FileInputStream fis = new FileInputStream("cache.ser");
+		final ObjectInputStream ois = new ObjectInputStream(fis);
+		this.instancesShortFormCache = (HashMap) ois.readObject();
+		ois.close();
+		fis.close();
 	}
 }
