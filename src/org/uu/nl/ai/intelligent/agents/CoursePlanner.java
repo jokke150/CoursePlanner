@@ -3,9 +3,7 @@ package org.uu.nl.ai.intelligent.agents;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -15,7 +13,7 @@ import org.uu.nl.ai.intelligent.agents.query.QueryEngine;
 
 public class CoursePlanner {
 	public static final String ONTOLOGY_PATH = "ontology/CoursePlanner.owl";
-	public static final boolean READ_CACHE = true;
+	public static final boolean READ_CACHE = false;
 
 	public static void main(final String[] args)
 			throws IOException, OWLOntologyCreationException, ClassNotFoundException {
@@ -58,7 +56,7 @@ public class CoursePlanner {
 		final Agent agent = new Agent(student, preferences);
 		final Set<CoursePlan> bestCoursePlans = agent.getBestCoursePlans();
 
-		System.out.println(bestCoursePlans);
+		printCoursePlans(bestCoursePlans);
 
 	}
 
@@ -88,6 +86,33 @@ public class CoursePlanner {
 		}
 
 		return isValid;
+	}
+
+	private static void printCoursePlans(final Set<CoursePlan> coursePlans)
+			throws IOException, OWLOntologyCreationException, ClassNotFoundException  {
+		QueryEngine queryEngine = QueryEngine.getInstance();
+		Set<String> courses;
+		String building;
+		String classroom;
+		String day;
+
+		for(CoursePlan coursePlan : coursePlans){
+			System.out.println("------------------------------");
+			System.out.println("This is your study plan:\n");
+			for(int i=1; i<=4; i++){
+				System.out.println("PERIOD " + i + ":");
+				courses = coursePlan.getCoursesInPeriod(i);
+
+				for(String course : courses){
+					building = String.join("",queryEngine.getInstancesShortForm("Building houses value "+ course,false));
+					classroom = String.join("",queryEngine.getInstancesShortForm("Classroom houses value "+ course,false));
+					day = String.join("",queryEngine.getInstancesShortForm("Day comprisesCourse value "+ course,false));
+					System.out.println("*** " + course + " - every "+ day + " in " + classroom + ", "+ building);
+				}
+				System.out.println("\n");
+			}
+			System.out.println("------------------------------");
+		}
 	}
 
 }
