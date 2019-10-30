@@ -33,14 +33,13 @@ public class CoursePlanner {
 //		final Preferences preferences = new Preferences(reader);
 //		preferences.askForPreferences();
 
-		final Set<String> preferredCourses = Arrays.asList("MobileInteraction").stream().collect(Collectors.toSet());
+		final Set<String> preferredCourses = Arrays.asList("IntelligentAgents").stream().collect(Collectors.toSet());
 		final Set<String> preferredTopics = Arrays.asList("DescriptionLogic", "Optimisation").stream()
 				.collect(Collectors.toSet());
 		final Set<String> preferredLecturers = Arrays.asList("Lecturer1").stream().collect(Collectors.toSet());
 		final Set<String> preferredDays = Arrays.asList("Monday", "Tuesday").stream().collect(Collectors.toSet());
 
-		final Set<String> dislikedCourses = Arrays.asList("MachineLearning", "LogicAndComputation").stream()
-				.collect(Collectors.toSet());
+		final Set<String> dislikedCourses = Arrays.asList("BusinessIntelligence").stream().collect(Collectors.toSet());
 		final Set<String> dislikedTopics = Arrays.asList("Multi-AgentSystems", "ResearchInternshipAI").stream()
 				.collect(Collectors.toSet());
 		final Set<String> dislikedLecturers = Arrays.asList("Lecturer2").stream().collect(Collectors.toSet());

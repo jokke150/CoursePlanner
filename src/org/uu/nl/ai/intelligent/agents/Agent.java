@@ -43,16 +43,6 @@ public class Agent {
 	private Set<CoursePlan> getBestCoursePlans(final CoursePlan coursePlan)
 			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
 
-		// TODO: Add obligations to follow (e.g., each student must take Methods of AI
-		// Research course) and infer them by study subject for example
-
-		// TODO: Branch
-		// 1. Prerequisite could be taken in previous period
-		// 2. Two courses have the same utility and the same number of friends taking
-		// them
-		// 3. A course is offered in multiple different periods, create a course plan
-		// for all scenarios
-
 		final Set<CoursePlan> coursePlans = new HashSet<>();
 
 		// For each period query the available courses
@@ -141,38 +131,16 @@ public class Agent {
 						// Assumption: The more friends take a course the more preferable it is
 						// TODO: Correct? If yes, include in report!
 
-						// For now we will just use one random course with the highest number of friends
+						// We just use one random course with the highest number of friends
 						// and do not create branches for all of them
-						// TODO branch?!
 						final SortedMap<Integer, Set<String>> coursesByNumOfFriends = getCoursesByNumOfFriends(
 								validCourses);
 						final int highestNumOfFriends = coursesByNumOfFriends.lastKey();
-						if (coursePlan.isPeriodFull(period)) {
-							final int i = 0;
-						}
 						coursePlan.addCourseInPeriod(coursesByNumOfFriends.get(highestNumOfFriends).iterator().next(),
 								period, utility);
 						if (coursePlan.isPeriodFull(period)) {
 							break;
 						}
-
-//					if (coursesByNumOfFriends.get(highestNumOfFriends).size() == 1) {
-//						// Only one valid course with highest number of friends
-//						coursePlan.addCourseInPeriod(coursesByNumOfFriends.get(highestNumOfFriends).iterator().next(),
-//								period, utility);
-//					} else {
-//						// Multiple valid courses with highest number of friends
-//						// Create an alternative study plan
-//						for (final String courseWithHighestNumOfFriends : coursesByNumOfFriends
-//								.get(highestNumOfFriends)) {
-//							final CoursePlan branch = new CoursePlan(coursePlan);
-//							coursePlan.addCourseInPeriod(courseWithHighestNumOfFriends, period, utility);
-//							final Set<CoursePlan> alternativeCoursePlans = getBestCoursePlans(branch);
-//							coursePlans.addAll(alternativeCoursePlans);
-//						}
-//
-//
-//					}
 
 					} else {
 						// No valid courses with highest utility -> Next utility
@@ -192,7 +160,17 @@ public class Agent {
 
 	private int canTakePrereqInPrevPeriod(final String prerequisite, final int currentPeriod,
 			final List<Set<String>> coursesInPeriods) {
-		// TODO
+
+		// We will not find any possible period but just the first occurence of a
+		// prerequisite
+
+		for (int period = 1; period < currentPeriod; period++) {
+			final Set<String> coursesInPeriod = coursesInPeriods.get(period - 1);
+			if (coursesInPeriod.contains(prerequisite)) {
+				return period;
+			}
+		}
+
 		return 0;
 
 	}
