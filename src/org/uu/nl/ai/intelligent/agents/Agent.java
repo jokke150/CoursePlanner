@@ -22,7 +22,7 @@ import org.uu.nl.ai.intelligent.agents.query.QueryEngine;
 
 public class Agent {
 	private static final List<String> PERIOD_NAMES = Arrays.asList("CoursePerPeriod1", "CoursePerPeriod2",
-			"CoursePerPeriod2", "CoursePerPeriod2");
+			"CoursePerPeriod3", "CoursePerPeriod4");
 
 	private final String student;
 	private final Preferences preferences;
@@ -60,88 +60,91 @@ public class Agent {
 
 		// Get the best courses for each period
 		for (int period = startPeriod; period <= PERIOD_NAMES.size(); period++) {
-			final Set<String> coursesInPeriod = coursesInPeriods.get(period - 1);
+			if (!coursePlan.isPeriodFull(period)) {
+				final Set<String> coursesInPeriod = coursesInPeriods.get(period - 1);
 
-			final SortedMap<Integer, Set<String>> coursesByUtility = getCoursesByUtility(coursesInPeriod);
-			for (final Entry<Integer, Set<String>> coursesByUtilityEntry : coursesByUtility.entrySet()) {
-				final int utility = coursesByUtilityEntry.getKey();
-				final Set<String> courses = coursesByUtilityEntry.getValue();
+				final SortedMap<Integer, Set<String>> coursesByUtility = getCoursesByUtility(coursesInPeriod);
+				for (final Entry<Integer, Set<String>> coursesByUtilityEntry : coursesByUtility.entrySet()) {
+					final int utility = coursesByUtilityEntry.getKey();
+					final Set<String> courses = coursesByUtilityEntry.getValue();
 
-				// A student cannot register for a course more than once.
-				final Set<String> coursesAlreadyTaken = getCoursesAlreadyTaken();
+					// A student cannot register for a course more than once.
+					final Set<String> coursesAlreadyTaken = getCoursesAlreadyTaken();
 
-				final Set<String> coursesNotAlreadyTaken = courses.stream()
-						.filter(i -> !coursesAlreadyTaken.contains(i)).collect(Collectors.toSet());
+					final Set<String> coursesNotAlreadyTaken = courses.stream()
+							.filter(i -> !coursesAlreadyTaken.contains(i)).collect(Collectors.toSet());
 
-				final Set<String> coursesAlreadyPlanned = coursePlan.getAllCourses(); // TODO: Up until certain period?
+					final Set<String> coursesAlreadyPlanned = coursePlan.getAllCourses(); // TODO: Up until certain
+																							// period?
 
-				final Map<String, Set<String>> prerequisitesByCourse = getPrerequisitesByCourse(coursesNotAlreadyTaken);
+					final Map<String, Set<String>> prerequisitesByCourse = getPrerequisitesByCourse(
+							coursesNotAlreadyTaken);
 
-				for (final String course : coursesNotAlreadyTaken) {
-					// Course offered in multiple periods? Branch by removing planned course from
-					// previous period
-					if (coursesAlreadyPlanned.contains(course)) {
-						final CoursePlan branch = CoursePlan.branchByRemovingCourse(coursePlan, course);
-						final Set<CoursePlan> alternativeCoursePlans = getBestCoursePlans(branch);
-						coursePlans.addAll(alternativeCoursePlans);
-					}
-
-					// Prerequisites not met? Branch if it is feasible to take them in previous
-					// periods and skip course
-					final Set<String> coursePrerequisites = prerequisitesByCourse.get(course);
-					final boolean prerequisiesMet = hasTakenPrerequisites(prerequisitesByCourse.get(course),
-							coursesAlreadyTaken);
-					if (!prerequisiesMet) {
-						final Set<PrerequisiteDemand> prerequisiteDemands = new HashSet<>();
-						// Feasible to take prerequisites in previous periods?
-						for (final String prerequisite : coursePrerequisites) {
-							final int periodForPrerequisite = canTakePrereqInPrevPeriod(prerequisite, period,
-									coursesInPeriods);
-							final int prereqUtility = calculateUtility(prerequisite);
-							if (periodForPrerequisite != 0) {
-								final PrerequisiteDemand prerequisiteDemand = new PrerequisiteDemand(prerequisite,
-										prereqUtility, periodForPrerequisite);
-								prerequisiteDemands.add(prerequisiteDemand);
-							} else {
-								// Not all prerequisites can be met in previous periods
-								break;
-							}
-						}
-						if (prerequisiteDemands.size() == coursePrerequisites.size()) {
-							// All prerequisites can be met in previous periods
-							final CoursePlan branch = CoursePlan.branchByDemandingPrerequisites(coursePlan,
-									prerequisiteDemands);
+					for (final String course : coursesNotAlreadyTaken) {
+						// Course offered in multiple periods? Branch by removing planned course from
+						// previous period
+						if (coursesAlreadyPlanned.contains(course)) {
+							final CoursePlan branch = CoursePlan.branchByRemovingCourse(coursePlan, course);
 							final Set<CoursePlan> alternativeCoursePlans = getBestCoursePlans(branch);
 							coursePlans.addAll(alternativeCoursePlans);
 						}
-						// Skip course since its prerequisites cannot be met with this course plan
-						continue;
+
+						// Prerequisites not met? Branch if it is feasible to take them in previous
+						// periods and skip course
+						final Set<String> coursePrerequisites = prerequisitesByCourse.get(course);
+						final boolean prerequisiesMet = hasTakenPrerequisites(prerequisitesByCourse.get(course),
+								coursesAlreadyTaken);
+						if (!prerequisiesMet) {
+							final Set<PrerequisiteDemand> prerequisiteDemands = new HashSet<>();
+							// Feasible to take prerequisites in previous periods?
+							for (final String prerequisite : coursePrerequisites) {
+								final int periodForPrerequisite = canTakePrereqInPrevPeriod(prerequisite, period,
+										coursesInPeriods);
+								final int prereqUtility = calculateUtility(prerequisite);
+								if (periodForPrerequisite != 0) {
+									final PrerequisiteDemand prerequisiteDemand = new PrerequisiteDemand(prerequisite,
+											prereqUtility, periodForPrerequisite);
+									prerequisiteDemands.add(prerequisiteDemand);
+								} else {
+									// Not all prerequisites can be met in previous periods
+									break;
+								}
+							}
+							if (prerequisiteDemands.size() == coursePrerequisites.size()) {
+								// All prerequisites can be met in previous periods
+								final CoursePlan branch = CoursePlan.branchByDemandingPrerequisites(coursePlan,
+										prerequisiteDemands);
+								final Set<CoursePlan> alternativeCoursePlans = getBestCoursePlans(branch);
+								coursePlans.addAll(alternativeCoursePlans);
+							}
+							// Skip course since its prerequisites cannot be met with this course plan
+							continue;
+						}
 					}
-				}
 
-				final Set<String> validCourses = getValidCourses(coursesNotAlreadyTaken, coursesAlreadyTaken,
-						coursesAlreadyPlanned, prerequisitesByCourse);
+					final Set<String> validCourses = getValidCourses(coursesNotAlreadyTaken, coursesAlreadyTaken,
+							coursesAlreadyPlanned, prerequisitesByCourse);
 
-				if (validCourses.size() == 1) {
-					// Only one valid course
-					coursePlan.addCourseInPeriod(validCourses.iterator().next(), period, utility);
-				} else if (validCourses.size() > 1) {
-					// Multiple valid courses
+					if (validCourses.size() == 1) {
+						// Only one valid course
+						coursePlan.addCourseInPeriod(validCourses.iterator().next(), period, utility);
+					} else if (validCourses.size() > 1) {
+						// Multiple valid courses
 
-					// When a student has an option between two courses that are equally
-					// preferable, the student would like to take a course that her friend takes.
+						// When a student has an option between two courses that are equally
+						// preferable, the student would like to take a course that her friend takes.
 
-					// Assumption: The more friends take a course the more preferable it is
-					// TODO: Correct? If yes, include in report!
+						// Assumption: The more friends take a course the more preferable it is
+						// TODO: Correct? If yes, include in report!
 
-					// For now we will just use one random course with the highest number of friends
-					// and do not create branches for all of them
-					// TODO branch?!
-					final SortedMap<Integer, Set<String>> coursesByNumOfFriends = getCoursesByNumOfFriends(
-							validCourses);
-					final int highestNumOfFriends = coursesByNumOfFriends.lastKey();
-					coursePlan.addCourseInPeriod(coursesByNumOfFriends.get(highestNumOfFriends).iterator().next(),
-							period, utility);
+						// For now we will just use one random course with the highest number of friends
+						// and do not create branches for all of them
+						// TODO branch?!
+						final SortedMap<Integer, Set<String>> coursesByNumOfFriends = getCoursesByNumOfFriends(
+								validCourses);
+						final int highestNumOfFriends = coursesByNumOfFriends.lastKey();
+						coursePlan.addCourseInPeriod(coursesByNumOfFriends.get(highestNumOfFriends).iterator().next(),
+								period, utility);
 
 //					if (coursesByNumOfFriends.get(highestNumOfFriends).size() == 1) {
 //						// Only one valid course with highest number of friends
@@ -161,9 +164,10 @@ public class Agent {
 //
 //					}
 
-				} else {
-					// No valid courses with highest utility -> Next utility
-					continue;
+					} else {
+						// No valid courses with highest utility -> Next utility
+						continue;
+					}
 				}
 			}
 
@@ -305,7 +309,7 @@ public class Agent {
 	private Set<String> getCoursesAlreadyTaken()
 			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
 		final Set<String> coursesAlreadyTaken = QueryEngine.getInstance()
-				.getInstancesShortForm("hasBeenTakenBy value + " + this.student, false);
+				.getInstancesShortForm("hasBeenTakenBy value " + this.student, false);
 
 		return coursesAlreadyTaken;
 	}
@@ -348,6 +352,7 @@ public class Agent {
 				coursesForNumOfFriends = new HashSet<>();
 			}
 			coursesForNumOfFriends.add(course);
+			coursesByNumOfFriends.put(numOfFriends, coursesForNumOfFriends);
 		}
 
 		return coursesByNumOfFriends;

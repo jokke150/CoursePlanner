@@ -17,10 +17,10 @@ public class CoursePlan {
 	Map<String, Integer> utilityByCourseInPeriod3 = new HashMap<>();
 	Map<String, Integer> utilityByCourseInPeriod4 = new HashMap<>();
 
-	private Set<String> coursesCausingBranchInPeriod1;
-	private Set<String> coursesCausingBranchInPeriod2;
-	private Set<String> coursesCausingBranchInPeriod3;
-	private Set<String> coursesCausingBranchInPeriod4;
+	private final Set<String> coursesCausingBranchInPeriod1 = new HashSet<>();
+	private final Set<String> coursesCausingBranchInPeriod2 = new HashSet<>();
+	private final Set<String> coursesCausingBranchInPeriod3 = new HashSet<>();
+	private final Set<String> coursesCausingBranchInPeriod4 = new HashSet<>();
 
 	public CoursePlan() {
 		super();
@@ -155,33 +155,15 @@ public class CoursePlan {
 		utilityByCourse.put(course, utility);
 	}
 
-	@Deprecated
-	public void switchCourse(final String course, final String altCourse, final int altUtility) {
-		Objects.requireNonNull(course);
-		Objects.requireNonNull(altCourse);
-
-		if (this.utilityByCourseInPeriod1.remove(course) != null) {
-			addCourseInPeriod1(altCourse, altUtility);
-		} else if (this.utilityByCourseInPeriod2.remove(course) != null) {
-			addCourseInPeriod2(altCourse, altUtility);
-		} else if (this.utilityByCourseInPeriod3.remove(course) != null) {
-			addCourseInPeriod3(altCourse, altUtility);
-		} else if (this.utilityByCourseInPeriod4.remove(course) != null) {
-			addCourseInPeriod4(altCourse, altUtility);
-		} else {
-			throw new IllegalArgumentException("course not in course plan");
-		}
-	}
-
 	/**
 	 * @return 1 for Period 1, 2 for Period 2, 3 for Period 3, 4 for Period 4 and -1
 	 *         if the CoursePlan is finished
 	 */
 	public int getFirstIncompletePeriod() {
-		if (this.utilityByCourseInPeriod1.size() == NUM_OF_COURSES_PER_PERIOD) {
-			if (this.utilityByCourseInPeriod2.size() == NUM_OF_COURSES_PER_PERIOD) {
-				if (this.utilityByCourseInPeriod3.size() == NUM_OF_COURSES_PER_PERIOD) {
-					if (this.utilityByCourseInPeriod4.size() == NUM_OF_COURSES_PER_PERIOD) {
+		if (isPeriod1Full()) {
+			if (isPeriod2Full()) {
+				if (isPeriod3Full()) {
+					if (isPeriod4Full()) {
 						throw new IllegalStateException();
 					} else {
 						return 4;
@@ -195,6 +177,37 @@ public class CoursePlan {
 		} else {
 			return 1;
 		}
+	}
+
+	public boolean isPeriodFull(final int period) {
+		switch (period) {
+		case 1:
+			return isPeriod1Full();
+		case 2:
+			return isPeriod2Full();
+		case 3:
+			return isPeriod3Full();
+		case 4:
+			return isPeriod4Full();
+		default:
+			throw new IllegalArgumentException();
+		}
+	}
+
+	public boolean isPeriod1Full() {
+		return this.utilityByCourseInPeriod1.size() == NUM_OF_COURSES_PER_PERIOD;
+	}
+
+	public boolean isPeriod2Full() {
+		return this.utilityByCourseInPeriod2.size() == NUM_OF_COURSES_PER_PERIOD;
+	}
+
+	public boolean isPeriod3Full() {
+		return this.utilityByCourseInPeriod3.size() == NUM_OF_COURSES_PER_PERIOD;
+	}
+
+	public boolean isPeriod4Full() {
+		return this.utilityByCourseInPeriod4.size() == NUM_OF_COURSES_PER_PERIOD;
 	}
 
 	public void addCourseInPeriod(final String course, final int period, final int utility) {
@@ -246,9 +259,8 @@ public class CoursePlan {
 	public void addCourseInPeriod2(final String course, final int utility) {
 		Objects.requireNonNull(course);
 
-		if ((this.utilityByCourseInPeriod1.size() != NUM_OF_COURSES_PER_PERIOD)
-				|| (this.utilityByCourseInPeriod2.size() == NUM_OF_COURSES_PER_PERIOD)
-				|| getAllCourses().contains(course) || this.coursesCausingBranchInPeriod1.contains(course)) {
+		if ((this.utilityByCourseInPeriod2.size() == NUM_OF_COURSES_PER_PERIOD) || getAllCourses().contains(course)
+				|| this.coursesCausingBranchInPeriod2.contains(course)) {
 			throw new IllegalStateException();
 		}
 		this.utilityByCourseInPeriod2.put(course, utility);
@@ -270,10 +282,8 @@ public class CoursePlan {
 	public void addCourseInPeriod3(final String course, final int utility) {
 		Objects.requireNonNull(course);
 
-		if ((this.utilityByCourseInPeriod1.size() != NUM_OF_COURSES_PER_PERIOD)
-				|| (this.utilityByCourseInPeriod2.size() != NUM_OF_COURSES_PER_PERIOD)
-				|| (this.utilityByCourseInPeriod3.size() == NUM_OF_COURSES_PER_PERIOD)
-				|| getAllCourses().contains(course) || this.coursesCausingBranchInPeriod1.contains(course)) {
+		if ((this.utilityByCourseInPeriod3.size() == NUM_OF_COURSES_PER_PERIOD) || getAllCourses().contains(course)
+				|| this.coursesCausingBranchInPeriod3.contains(course)) {
 			throw new IllegalStateException();
 		}
 		this.utilityByCourseInPeriod3.put(course, utility);
@@ -295,11 +305,8 @@ public class CoursePlan {
 	public void addCourseInPeriod4(final String course, final int utility) {
 		Objects.requireNonNull(course);
 
-		if ((this.utilityByCourseInPeriod1.size() != NUM_OF_COURSES_PER_PERIOD)
-				|| (this.utilityByCourseInPeriod2.size() != NUM_OF_COURSES_PER_PERIOD)
-				|| (this.utilityByCourseInPeriod3.size() != NUM_OF_COURSES_PER_PERIOD)
-				|| (this.utilityByCourseInPeriod4.size() == NUM_OF_COURSES_PER_PERIOD)
-				|| getAllCourses().contains(course) || this.coursesCausingBranchInPeriod1.contains(course)) {
+		if ((this.utilityByCourseInPeriod4.size() == NUM_OF_COURSES_PER_PERIOD) || getAllCourses().contains(course)
+				|| this.coursesCausingBranchInPeriod4.contains(course)) {
 			throw new IllegalStateException();
 		}
 		this.utilityByCourseInPeriod4.put(course, utility);
