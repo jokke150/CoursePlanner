@@ -800,15 +800,6 @@
     
 
 
-    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N1 -->
-
-    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N1">
-        <rdf:type rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Classroom"/>
-        <houses rdf:resource="http:/uu.nl/Systems"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#CenterLibrary"/>
-    </owl:NamedIndividual>
-    
-
 
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N2 -->
 
@@ -899,15 +890,6 @@
     
 
 
-    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T2 -->
-
-    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T2">
-        <rdf:type rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Classroom"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Technoplex"/>
-    </owl:NamedIndividual>
-    
-
-
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Technoplex -->
 
     <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Technoplex">
@@ -951,7 +933,6 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/BusinessIntelligence">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod1"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N1"/>
         <uu:isOn rdf:resource="http:/uu.nl/BasicMathematics"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#ChrisJanssen"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Friday"/>
@@ -983,7 +964,6 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/ComputerVision">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod1"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N1"/>
         <uu:isOn rdf:resource="http:/uu.nl/Optimisation"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PinarYolum"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Tuesday"/>
@@ -1022,7 +1002,6 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/CrowdSimulation">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod1"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T2"/>
         <uu:isOn rdf:resource="http:/uu.nl/Optimisation"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#ParisHilton"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Monday"/>
@@ -1045,7 +1024,6 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/DigitalEthics">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod2"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T2"/>
         <uu:isOn rdf:resource="http:/uu.nl/Marketing"/>
         <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
         <rdfs:label>DigitalEthics</rdfs:label>
@@ -1089,7 +1067,6 @@
     <!-- http:/uu.nl/Graphics -->
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/Graphics">
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N1"/>
         <uu:isOn rdf:resource="http:/uu.nl/Optimisation"/>
         <uu:isOn rdf:resource="http:/uu.nl/PathTracing"/>
         <uu:isOn rdf:resource="http:/uu.nl/RayTracing"/>
@@ -1107,7 +1084,6 @@
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod2"/>
         <hasPrerequisite rdf:resource="http:/uu.nl/BusinessIntelligence"/>
         <hasPrerequisite rdf:resource="http:/uu.nl/IntelligentAgents"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T1"/>
         <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PinarYolum"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Monday"/>
@@ -1121,7 +1097,6 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/IntroductionToNaturalSciences">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod2"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N2"/>
         <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
         <uu:isOn rdf:resource="http:/uu.nl/Systems"/>
         <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
@@ -1168,7 +1143,6 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/LogicAndComputation">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod3"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N1"/>
         <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
         <uu:uses rdf:resource="http:/uu.nl/Theory"/>
     </owl:NamedIndividual>
@@ -1179,7 +1153,6 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/LogicAndLanguage">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod3"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T1"/>
         <uu:uses rdf:resource="http:/uu.nl/Theory"/>
         <rdfs:label>LogicAndLanguage</rdfs:label>
     </owl:NamedIndividual>
@@ -1211,7 +1184,6 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/Mathematics">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod3"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T2"/>
         <uu:isOn rdf:resource="http:/uu.nl/BasicMathematics"/>
         <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
         <uu:uses rdf:resource="http:/uu.nl/Theory"/>
@@ -1232,7 +1204,8 @@
     <!-- http:/uu.nl/MobileInteraction -->
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/MobileInteraction">
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T2"/>
+        <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod2"/>
+        <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod3"/>
         <uu:uses rdf:resource="http:/uu.nl/Surveys"/>
         <rdfs:label>MobileInteraction</rdfs:label>
     </owl:NamedIndividual>
@@ -1252,7 +1225,6 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/Multi-AgentLearning">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod3"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N1"/>
         <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
         <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
         <rdfs:label>Multi-AgentLearning</rdfs:label>
@@ -1265,7 +1237,6 @@
     <owl:NamedIndividual rdf:about="http:/uu.nl/Multi-AgentSystems">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod3"/>
         <hasPrerequisite rdf:resource="http:/uu.nl/IntelligentAgents"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N2"/>
         <uu:isOn rdf:resource="http:/uu.nl/ComputerSystems"/>
         <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
         <uu:isPrerequisite rdf:resource="http:/uu.nl/ResearchInternshipAI"/>
@@ -1281,7 +1252,6 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/NaturalLanguageProcessing">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod4"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T2"/>
         <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#BobMarley"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Tuesday"/>
@@ -1321,7 +1291,6 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/ResearchInternshipAI">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod4"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N1"/>
         <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PinarYolum"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Monday"/>
@@ -1353,7 +1322,6 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/Statistics">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod4"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N1"/>
         <uu:isOn rdf:resource="http:/uu.nl/BasicMathematics"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#ChrisJanssen"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Thursday"/>

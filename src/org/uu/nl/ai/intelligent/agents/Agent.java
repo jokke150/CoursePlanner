@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -61,7 +62,7 @@ public class Agent {
 		// Get the best courses for each period
 		for (int period = startPeriod; period <= PERIOD_NAMES.size(); period++) {
 			if (!coursePlan.isPeriodFull(period)) {
-				final Set<String> coursesInPeriod = coursesInPeriods.get(period - 1);
+				final Set<String> coursesInPeriod = coursesInPeriods.get(period - startPeriod);
 
 				final SortedMap<Integer, Set<String>> coursesByUtility = getCoursesByUtility(coursesInPeriod);
 				for (final Entry<Integer, Set<String>> coursesByUtilityEntry : coursesByUtility.entrySet()) {
@@ -74,19 +75,18 @@ public class Agent {
 					final Set<String> coursesNotAlreadyTaken = courses.stream()
 							.filter(i -> !coursesAlreadyTaken.contains(i)).collect(Collectors.toSet());
 
-					final Set<String> coursesAlreadyPlanned = coursePlan.getAllCourses();
-
 					final Map<String, Set<String>> prerequisitesByCourse = getPrerequisitesByCourse(
 							coursesNotAlreadyTaken);
 
 					for (final String course : coursesNotAlreadyTaken) {
 						// Course offered in multiple periods? Branch by removing planned course from
 						// previous period
-						if (coursesAlreadyPlanned.contains(course)) {
+						final Set<String> coursesPlannedForPrevPeriods = coursePlan
+								.getAllCoursesUntilPeriod(period - 1);
+						if (coursesPlannedForPrevPeriods.contains(course)) {
 							final CoursePlan branch = CoursePlan.branchByRemovingCourse(coursePlan, course);
 							final Set<CoursePlan> alternativeCoursePlans = getBestCoursePlans(branch);
 							coursePlans.addAll(alternativeCoursePlans);
-							System.out.println("Branching by removing course " + course);
 						}
 
 						// Prerequisites not met? Branch if it is feasible to take them in previous
@@ -116,7 +116,6 @@ public class Agent {
 										prerequisiteDemands);
 								final Set<CoursePlan> alternativeCoursePlans = getBestCoursePlans(branch);
 								coursePlans.addAll(alternativeCoursePlans);
-								System.out.println("Branching by demanding prerequisites " + prerequisiteDemands);
 							}
 							// Skip course since its prerequisites cannot be met with this course plan
 							continue;
@@ -124,12 +123,12 @@ public class Agent {
 					}
 
 					final Set<String> validCourses = getValidCourses(coursesNotAlreadyTaken, coursesAlreadyTaken,
-							coursesAlreadyPlanned, prerequisitesByCourse);
+							coursePlan.getAllCourses(), coursePlan.getCoursesCausingBranchInPeriod(period),
+							prerequisitesByCourse);
 
 					if (validCourses.size() == 1) {
 						// Only one valid course
 						coursePlan.addCourseInPeriod(validCourses.iterator().next(), period, utility);
-						QueryEngine.getInstance().dumpInstancesShortFormCache();
 						if (coursePlan.isPeriodFull(period)) {
 							break;
 						}
@@ -148,9 +147,11 @@ public class Agent {
 						final SortedMap<Integer, Set<String>> coursesByNumOfFriends = getCoursesByNumOfFriends(
 								validCourses);
 						final int highestNumOfFriends = coursesByNumOfFriends.lastKey();
+						if (coursePlan.isPeriodFull(period)) {
+							final int i = 0;
+						}
 						coursePlan.addCourseInPeriod(coursesByNumOfFriends.get(highestNumOfFriends).iterator().next(),
 								period, utility);
-						QueryEngine.getInstance().dumpInstancesShortFormCache();
 						if (coursePlan.isPeriodFull(period)) {
 							break;
 						}
@@ -226,7 +227,7 @@ public class Agent {
 
 	private SortedMap<Integer, Set<String>> getCoursesByUtility(final Set<String> courses)
 			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
-		final SortedMap<Integer, Set<String>> coursesByUtility = new TreeMap<>();
+		final SortedMap<Integer, Set<String>> coursesByUtility = new TreeMap<>(Collections.reverseOrder());
 		for (final String course : courses) {
 			final int utility = calculateUtility(course);
 			Set<String> coursesForUtility;
@@ -337,12 +338,14 @@ public class Agent {
 	}
 
 	private Set<String> getValidCourses(final Set<String> coursesNotAlreadyTaken, final Set<String> coursesAlreadyTaken,
-			final Set<String> coursesAlreadyPlanned, final Map<String, Set<String>> prerequisitesByCourse)
+			final Set<String> coursesAlreadyPlanned, final Set<String> coursesCausingBranch,
+			final Map<String, Set<String>> prerequisitesByCourse)
 			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
 
 		final Set<String> validCourses = new HashSet<>();
 		for (final String course : coursesNotAlreadyTaken) {
 			if (!coursesAlreadyPlanned.contains(course) // Student can only take a course once
+					&& !coursesCausingBranch.contains(course)
 					&& hasTakenPrerequisites(prerequisitesByCourse.get(course), coursesAlreadyTaken)) {
 				validCourses.add(course);
 			}
