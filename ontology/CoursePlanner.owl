@@ -83,10 +83,19 @@
     
 
 
+<<<<<<< HEAD
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#locatedIn -->
 
     <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#locatedIn">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+=======
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#isUsedIn -->
+
+    <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#isUsedIn">
+        <owl:inverseOf rdf:resource="http:/uu.nl/uses"/>
+        <rdfs:domain rdf:resource="http:/uu.nl/ResearchMethodology"/>
+        <rdfs:range rdf:resource="http:/uu.nl/Course"/>
+>>>>>>> 512da82d32f1fb76a18c1a0c926c315042ec7faf
     </owl:ObjectProperty>
     
 
@@ -1204,6 +1213,7 @@
     <owl:NamedIndividual rdf:about="http:/uu.nl/Student1">
         <rdf:type rdf:resource="http:/uu.nl/Student"/>
         <hasFriend rdf:resource="http:/uu.nl/Student2"/>
+        <uu:hasTaken rdf:resource="http:/uu.nl/DigitalEthics"/>
         <uu:prefersDay rdf:resource="http:/uu.nl/Monday"/>
         <uu:takes rdf:resource="http:/uu.nl/IntelligentAgents"/>
         <uu:takes rdf:resource="http:/uu.nl/Mathematics"/>

@@ -2,12 +2,13 @@ package org.uu.nl.ai.intelligent.agents.data;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.uu.nl.ai.intelligent.agents.query.QueryEngine;
@@ -16,26 +17,31 @@ public class Preferences {
 	private static final short MIN_RATING = 1;
 	private static final short MAX_RATING = 10;
 
-	private BufferedReader reader;
+	private final BufferedReader reader;
 
 	private Set<String> preferredCourses;
-	private Set<String> friends;
 	private Set<String> preferredTopics;
 	private Set<String> preferredLecturers;
 	private Set<String> preferredDays;
 
-	private short friendsWeight;
-	private short coursesWeight;
-	private short topicsWeight;
-	private short lecturersWeight;
-	private short daysWeight;
+	private short preferredCoursesWeight;
+	private short preferredTopicsWeight;
+	private short preferredLecturersWeight;
+	private short preferredDaysWeight;
 
-	public Preferences() {
+	private Set<String> dislikedCourses;
+	private Set<String> dislikedTopics;
+	private Set<String> dislikedLecturers;
+	private Set<String> dislikedDays;
+
+	private short dislikedCoursesWeight;
+	private short dislikedTopicsWeight;
+	private short dislikedLecturersWeight;
+	private short dislikedDaysWeight;
+
+	public Preferences(final BufferedReader reader) {
 		super();
-	}
-
-	public Set<String> getFriends() {
-		return this.friends;
+		this.reader = reader;
 	}
 
 	public Set<String> getPreferredCourses() {
@@ -54,38 +60,64 @@ public class Preferences {
 		return this.preferredDays;
 	}
 
-	public short getFriendsWeight() {
-		return this.friendsWeight;
+	public short getPreferredCoursesWeight() {
+		return this.preferredCoursesWeight;
 	}
 
-	public short getCoursesWeight() {
-		return this.coursesWeight;
+	public short getPreferredTopicsWeight() {
+		return this.preferredTopicsWeight;
 	}
 
-	public short getTopicsWeight() {
-		return this.topicsWeight;
+	public short getPreferredLecturersWeight() {
+		return this.preferredLecturersWeight;
 	}
 
-	public short getLecturersWeight() {
-		return this.lecturersWeight;
+	public short getPreferredDaysWeight() {
+		return this.preferredDaysWeight;
 	}
 
-	public short getDaysWeight() {
-		return this.daysWeight;
+	public Set<String> getDislikedCourses() {
+		return this.dislikedCourses;
+	}
+
+	public Set<String> getDislikedTopics() {
+		return this.dislikedTopics;
+	}
+
+	public Set<String> getDislikedLecturers() {
+		return this.dislikedLecturers;
+	}
+
+	public Set<String> getDislikedDays() {
+		return this.dislikedDays;
+	}
+
+	public short getDislikedCoursesWeight() {
+		return this.dislikedCoursesWeight;
+	}
+
+	public short getDislikedTopicsWeight() {
+		return this.dislikedTopicsWeight;
+	}
+
+	public short getDislikedLecturersWeight() {
+		return this.dislikedLecturersWeight;
+	}
+
+	public short getDislikedDaysWeight() {
+		return this.dislikedDaysWeight;
 	}
 
 	public void askForPreferences() throws IOException, OWLOntologyCreationException {
-		this.reader = new BufferedReader(new InputStreamReader(System.in));
-		askForPreferredCourses();
-		askForFriends();
-		askForPreferredTopics();
-		askForPreferredLecturers();
-		askForPreferredDays();
-		this.reader.close();
+		askForCoursePreferences();
+		askForTopicPreferences();
+		askForLecturerPreferences();
+		askForDayPreferences();
 	}
 
-	private void askForPreferredCourses() throws IOException, OWLOntologyCreationException {
+	private void askForCoursePreferences() throws IOException, OWLOntologyCreationException {
 		final Set<String> courses = QueryEngine.getInstance().getInstancesShortForm("Course", false);
+
 		Set<String> preferredCourses;
 		do {
 			System.out.println("Please enter your preferred courses (comma-separated): ");
@@ -96,29 +128,26 @@ public class Preferences {
 
 		System.out.println("How important is it to take courses that you prefer? Enter a value between " + MIN_RATING
 				+ " and " + MAX_RATING + ": ");
-		this.coursesWeight = getWeightRating();
-	}
+		this.preferredCoursesWeight = getWeightRating();
 
-	private void askForFriends() throws IOException, OWLOntologyCreationException {
-		final Set<String> students = QueryEngine.getInstance().getInstancesShortForm("Student", false);
-		Set<String> friends;
+		Set<String> dislikedCourses;
 		do {
-			System.out.println("Please enter your friends names (comma-separated): ");
-			printRange(students);
-			friends = convertInput(this.reader.readLine());
-		} while (!isInputValid(friends, students));
-		this.friends = friends;
+			System.out.println("Please enter your disliked courses (comma-separated): ");
+			printRange(courses.stream().filter(i -> this.preferredCourses.contains(i)).collect(Collectors.toSet()));
+			dislikedCourses = convertInput(this.reader.readLine());
+		} while (!isInputValid(dislikedCourses, courses, preferredCourses));
+		this.dislikedCourses = dislikedCourses;
 
-		System.out.println("How important is it to take courses that your friends take? Enter a value between "
+		System.out.println("How important is it to not take courses that you dislike? Enter a value between "
 				+ MIN_RATING + " and " + MAX_RATING + ": ");
-		this.friendsWeight = getWeightRating();
+		this.dislikedCoursesWeight = getWeightRating();
 	}
 
-	private void askForPreferredTopics() throws IOException, OWLOntologyCreationException {
+	private void askForTopicPreferences() throws IOException, OWLOntologyCreationException {
 		final Set<String> topics = QueryEngine.getInstance().getInstancesShortForm("Topic", false);
 		Set<String> preferredTopics;
 		do {
-			System.out.println("Please enter your preferred courses (comma-separated): ");
+			System.out.println("Please enter your preferred topics (comma-separated): ");
 			printRange(topics);
 			preferredTopics = convertInput(this.reader.readLine());
 		} while (!isInputValid(preferredTopics, topics));
@@ -126,10 +155,22 @@ public class Preferences {
 
 		System.out.println("How important is it to take courses that are on preferred topics? Enter a value between "
 				+ MIN_RATING + " and " + MAX_RATING + ": ");
-		this.topicsWeight = getWeightRating();
+		this.preferredTopicsWeight = getWeightRating();
+
+		Set<String> dislikedTopics;
+		do {
+			System.out.println("Please enter your disliked topics (comma-separated): ");
+			printRange(topics.stream().filter(i -> this.preferredTopics.contains(i)).collect(Collectors.toSet()));
+			dislikedTopics = convertInput(this.reader.readLine());
+		} while (!isInputValid(dislikedTopics, topics, preferredTopics));
+		this.dislikedTopics = dislikedTopics;
+
+		System.out.println("How important is it to not take courses that are on disliked topics? Enter a value between "
+				+ MIN_RATING + " and " + MAX_RATING + ": ");
+		this.dislikedTopicsWeight = getWeightRating();
 	}
 
-	private void askForPreferredLecturers() throws IOException, OWLOntologyCreationException {
+	private void askForLecturerPreferences() throws IOException, OWLOntologyCreationException {
 		final Set<String> lecturers = QueryEngine.getInstance().getInstancesShortForm("Lecturer", false);
 		Set<String> preferredLecturers;
 		do {
@@ -142,10 +183,23 @@ public class Preferences {
 		System.out.println(
 				"How important is it to take courses that are taught by lecturers you prefer? Enter a value between "
 						+ MIN_RATING + " and " + MAX_RATING + ": ");
-		this.lecturersWeight = getWeightRating();
+		this.preferredLecturersWeight = getWeightRating();
+
+		Set<String> dislikedLecturers;
+		do {
+			System.out.println("Please enter your disliked lecturers (comma-separated): ");
+			printRange(lecturers.stream().filter(i -> this.preferredLecturers.contains(i)).collect(Collectors.toSet()));
+			dislikedLecturers = convertInput(this.reader.readLine());
+		} while (!isInputValid(dislikedLecturers, lecturers, preferredLecturers));
+		this.dislikedLecturers = dislikedLecturers;
+
+		System.out.println(
+				"How important is it to not take courses that are taught by lecturers you dislike? Enter a value between "
+						+ MIN_RATING + " and " + MAX_RATING + ": ");
+		this.dislikedDaysWeight = getWeightRating();
 	}
 
-	private void askForPreferredDays() throws IOException {
+	private void askForDayPreferences() throws IOException {
 		final List<String> days = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
 				"Sunday");
 		Set<String> preferredDays;
@@ -159,7 +213,20 @@ public class Preferences {
 		System.out.println(
 				"How important is it to take courses that are taught on days you prefer? Enter a value between "
 						+ MIN_RATING + " and " + MAX_RATING + ": ");
-		this.daysWeight = getWeightRating();
+		this.preferredDaysWeight = getWeightRating();
+
+		Set<String> dislikedDays;
+		do {
+			System.out.println("Please enter your disliked days (comma-separated): ");
+			printRange(days.stream().filter(i -> this.preferredDays.contains(i)).collect(Collectors.toSet()));
+			dislikedDays = convertInput(this.reader.readLine());
+		} while (!isInputValid(dislikedDays, days, preferredDays));
+		this.dislikedDays = dislikedDays;
+
+		System.out.println(
+				"How important is it not to take courses that are taught on days you dislike? Enter a value between "
+						+ MIN_RATING + " and " + MAX_RATING + ": ");
+		this.dislikedDaysWeight = getWeightRating();
 	}
 
 	private short getWeightRating() throws IOException {
@@ -189,10 +256,21 @@ public class Preferences {
 	}
 
 	private static boolean isInputValid(final Collection<String> input, final Collection<String> range) {
-		final boolean isValid = input.stream().allMatch(i -> range.contains(i));
-		if (!isValid) {
+		return isInputValid(input, range, new ArrayList<>());
+	}
+
+	private static boolean isInputValid(final Collection<String> input, final Collection<String> range,
+			final Collection<String> preferences) {
+		final boolean withinRange = input.stream().allMatch(i -> range.contains(i));
+		if (!withinRange) {
 			System.out.println("Input is not valid, please try again.");
 		}
-		return isValid;
+		final Set<String> dislikedAndPreferred = input.stream().filter(i -> preferences.contains(i))
+				.collect(Collectors.toSet());
+		if (!dislikedAndPreferred.isEmpty()) {
+			System.out.println(
+					"You cannot dislike and prefer " + dislikedAndPreferred.iterator().next() + " at the same time..");
+		}
+		return withinRange && dislikedAndPreferred.isEmpty();
 	}
 }
