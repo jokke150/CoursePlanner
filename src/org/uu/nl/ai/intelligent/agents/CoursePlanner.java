@@ -3,8 +3,10 @@ package org.uu.nl.ai.intelligent.agents;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.uu.nl.ai.intelligent.agents.data.CoursePlan;
@@ -19,35 +21,63 @@ public class CoursePlanner {
 
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-		final String studentId = askForStudentId(reader);
+//		final String student = askForStudent(reader);
 
-		final Preferences preferences = new Preferences(reader);
-		preferences.askForPreferences();
+		final String student = "Student1";
+
+//		final Preferences preferences = new Preferences(reader);
+//		preferences.askForPreferences();
+
+		final Set<String> preferredCourses = Arrays.asList("MachineLearning", "LogicAndComputation").stream()
+				.collect(Collectors.toSet());
+		final Set<String> preferredTopics = Arrays.asList("DescriptionLogic", "Optimisation").stream()
+				.collect(Collectors.toSet());
+		final Set<String> preferredLecturers = Arrays.asList("Lecturer1").stream().collect(Collectors.toSet());
+		final Set<String> preferredDays = Arrays.asList("Monday", "Tuesday").stream().collect(Collectors.toSet());
+
+		final Set<String> dislikedCourses = Arrays.asList("MachineLearning", "LogicAndComputation").stream()
+				.collect(Collectors.toSet());
+		final Set<String> dislikedTopics = Arrays.asList("Multi-AgentSystems", "ResearchInternshipAI").stream()
+				.collect(Collectors.toSet());
+		final Set<String> dislikedLecturers = Arrays.asList("Lecturer2").stream().collect(Collectors.toSet());
+		final Set<String> dislikedDays = Arrays.asList("Thursday", "Wednesday").stream().collect(Collectors.toSet());
+
+		final Preferences preferences = new Preferences(preferredCourses, preferredTopics, preferredLecturers,
+				preferredDays, 3, 6, 5, 8, dislikedCourses, dislikedTopics, dislikedLecturers, dislikedDays, 7, 2, 1,
+				8);
 
 		reader.close();
 
-		final Agent agent = new Agent(studentId, preferences);
-		final List<CoursePlan> bestCoursePlans = agent.getBestCoursePlans();
+		final Agent agent = new Agent(student, preferences);
+		final Set<CoursePlan> bestCoursePlans = agent.getBestCoursePlans();
+
+		System.out.println(bestCoursePlans);
 
 	}
 
-	private static String askForStudentId(final BufferedReader reader)
-			throws IOException, OWLOntologyCreationException {
-		final Set<String> studentIds = QueryEngine.getInstance().getInstancesShortForm("Topic", false);
-
-		String studentId;
+	private static String askForStudent(final BufferedReader reader) throws IOException, OWLOntologyCreationException {
+		Optional<String> student;
 		do {
 			System.out.println("Please enter your student ID: ");
-			studentId = reader.readLine();
-		} while (!isStudentIdValid(studentId, studentIds));
-		return studentId;
+			final String studentId = reader.readLine();
+
+			try {
+				Integer.parseInt(studentId);
+				student = QueryEngine.getInstance().getInstancesShortForm("student_ID value " + studentId, false)
+						.stream().findFirst();
+			} catch (final NumberFormatException exception) {
+				// Not a number
+				student = Optional.empty();
+			}
+		} while (!isStudentIdValid(student));
+		return student.get();
 	}
 
-	private static boolean isStudentIdValid(final String studentId, final Set<String> studentIds) {
-		final boolean isValid = studentIds.contains(studentId);
+	private static boolean isStudentIdValid(final Optional<String> student) {
+		final boolean isValid = student.isPresent();
 
 		if (!isValid) {
-			System.out.println("Input is not valid, please try again.");
+			System.out.println("Student Id could not have been found.");
 		}
 
 		return isValid;

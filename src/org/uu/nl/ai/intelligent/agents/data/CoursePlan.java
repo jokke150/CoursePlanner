@@ -1,34 +1,50 @@
 package org.uu.nl.ai.intelligent.agents.data;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CoursePlan {
 	private static final int NUM_OF_COURSES_PER_PERIOD = 2;
 
-	private Set<String> coursesInPeriod1;
-	private Set<String> coursesCausingBranchInPeriod1;
-	private Set<String> coursesInPeriod2;
-	private Set<String> coursesCausingBranchInPeriod2;
-	private Set<String> coursesInPeriod3;
-	private Set<String> coursesCausingBranchInPeriod3;
-	private Set<String> coursesInPeriod4;
-	private Set<String> coursesCausingBranchInPeriod4;
+	Map<String, Integer> utilityByCourseInPeriod1 = new HashMap<>();
+	Map<String, Integer> utilityByCourseInPeriod2 = new HashMap<>();
+	Map<String, Integer> utilityByCourseInPeriod3 = new HashMap<>();
+	Map<String, Integer> utilityByCourseInPeriod4 = new HashMap<>();
 
-	private int utility = 0;
+	private Set<String> coursesCausingBranchInPeriod1;
+	private Set<String> coursesCausingBranchInPeriod2;
+	private Set<String> coursesCausingBranchInPeriod3;
+	private Set<String> coursesCausingBranchInPeriod4;
 
 	public CoursePlan() {
 		super();
 	}
 
+	public CoursePlan(final CoursePlan coursePlan) {
+		super();
+
+		// Copy constructor
+		this.utilityByCourseInPeriod1 = coursePlan.utilityByCourseInPeriod1;
+		this.utilityByCourseInPeriod2 = coursePlan.utilityByCourseInPeriod2;
+		this.utilityByCourseInPeriod3 = coursePlan.utilityByCourseInPeriod3;
+		this.utilityByCourseInPeriod4 = coursePlan.utilityByCourseInPeriod4;
+
+		// TODO: causesBranch include
+	}
+
 	public Set<String> getAllCourses() {
 		final Set<String> allCourses = new HashSet<>();
-		allCourses.addAll(this.coursesInPeriod1);
-		allCourses.addAll(this.coursesInPeriod2);
-		allCourses.addAll(this.coursesInPeriod3);
-		allCourses.addAll(this.coursesInPeriod4);
-		return allCourses;
+		allCourses.addAll(this.utilityByCourseInPeriod1.keySet());
+		allCourses.addAll(this.utilityByCourseInPeriod2.keySet());
+		allCourses.addAll(this.utilityByCourseInPeriod3.keySet());
+		allCourses.addAll(this.utilityByCourseInPeriod4.keySet());
+		return Collections.unmodifiableSet(allCourses);
 	}
 
 	public Set<String> getCoursesInPeriod(final int period) {
@@ -43,6 +59,141 @@ public class CoursePlan {
 			return getCoursesInPeriod4();
 		default:
 			throw new IllegalArgumentException();
+		}
+	}
+
+	public Set<String> getCoursesCausingBranchInPeriod(final int period) {
+		switch (period) {
+		case 1:
+			return getCoursesCausingBranchInPeriod1();
+		case 2:
+			return getCoursesCausingBranchInPeriod2();
+		case 3:
+			return getCoursesCausingBranchInPeriod3();
+		case 4:
+			return getCoursesCausingBranchInPeriod4();
+		default:
+			throw new IllegalArgumentException();
+		}
+	}
+
+	public static CoursePlan branchByRemovingCourse(final CoursePlan coursePlan, final String course) {
+		Objects.requireNonNull(course);
+
+		final CoursePlan branch = new CoursePlan(coursePlan);
+
+		if (branch.utilityByCourseInPeriod1.remove(course) != null) {
+			branch.coursesCausingBranchInPeriod1.add(course);
+			branch.utilityByCourseInPeriod2.clear();
+			branch.utilityByCourseInPeriod3.clear();
+			branch.utilityByCourseInPeriod4.clear();
+		} else if (branch.utilityByCourseInPeriod2.remove(course) != null) {
+			branch.coursesCausingBranchInPeriod2.add(course);
+			branch.utilityByCourseInPeriod3.clear();
+			branch.utilityByCourseInPeriod4.clear();
+		} else if (branch.utilityByCourseInPeriod3.remove(course) != null) {
+			branch.coursesCausingBranchInPeriod3.add(course);
+			branch.utilityByCourseInPeriod4.clear();
+		} else if (branch.utilityByCourseInPeriod4.remove(course) != null) {
+			branch.coursesCausingBranchInPeriod4.add(course);
+		} else {
+			throw new IllegalArgumentException("course not in course plan");
+		}
+
+		return branch;
+	}
+
+	public static CoursePlan branchByDemandingPrerequisites(final CoursePlan coursePlan,
+			final Set<PrerequisiteDemand> prerequisiteDemands) {
+		Objects.requireNonNull(prerequisiteDemands);
+
+		final CoursePlan branch = new CoursePlan(coursePlan);
+
+		final Set<String> prerequisites = prerequisiteDemands.stream().map(i -> i.getPrerequisite())
+				.collect(Collectors.toSet());
+
+		for (final PrerequisiteDemand prerequisiteDemand : prerequisiteDemands) {
+			switch (prerequisiteDemand.getPeriod()) {
+			case 1:
+				switchCourseWithLowestUtilCourse(prerequisiteDemand.getPrerequisite(), prerequisiteDemand.getUtility(),
+						branch.utilityByCourseInPeriod1, prerequisites);
+			case 2:
+				switchCourseWithLowestUtilCourse(prerequisiteDemand.getPrerequisite(), prerequisiteDemand.getUtility(),
+						branch.utilityByCourseInPeriod2, prerequisites);
+			case 3:
+				switchCourseWithLowestUtilCourse(prerequisiteDemand.getPrerequisite(), prerequisiteDemand.getUtility(),
+						branch.utilityByCourseInPeriod3, prerequisites);
+			case 4:
+				switchCourseWithLowestUtilCourse(prerequisiteDemand.getPrerequisite(), prerequisiteDemand.getUtility(),
+						branch.utilityByCourseInPeriod4, prerequisites);
+			default:
+				throw new IllegalArgumentException();
+			}
+		}
+		return branch;
+	}
+
+	private static void switchCourseWithLowestUtilCourse(final String course, final int utility,
+			final Map<String, Integer> utilityByCourse, final Set<String> prerequisites) {
+		int lowestUtil = Integer.MAX_VALUE;
+		String lowestUtilCourse = null;
+		for (final Entry<String, Integer> utilityByCourseEntry : utilityByCourse.entrySet()) {
+			final String oldCourse = utilityByCourseEntry.getKey();
+			if (prerequisites.contains(oldCourse)) {
+				// Do not switch out previously switched out prerequisite with other
+				// prerequisite
+				continue;
+			}
+			final int oldUtility = utilityByCourseEntry.getValue();
+			if (oldUtility < lowestUtil) {
+				// TODO: When two courses have the same utility, we should branch again...
+				lowestUtil = utility;
+				lowestUtilCourse = oldCourse;
+			}
+		}
+		utilityByCourse.remove(lowestUtilCourse);
+		utilityByCourse.put(course, utility);
+	}
+
+	@Deprecated
+	public void switchCourse(final String course, final String altCourse, final int altUtility) {
+		Objects.requireNonNull(course);
+		Objects.requireNonNull(altCourse);
+
+		if (this.utilityByCourseInPeriod1.remove(course) != null) {
+			addCourseInPeriod1(altCourse, altUtility);
+		} else if (this.utilityByCourseInPeriod2.remove(course) != null) {
+			addCourseInPeriod2(altCourse, altUtility);
+		} else if (this.utilityByCourseInPeriod3.remove(course) != null) {
+			addCourseInPeriod3(altCourse, altUtility);
+		} else if (this.utilityByCourseInPeriod4.remove(course) != null) {
+			addCourseInPeriod4(altCourse, altUtility);
+		} else {
+			throw new IllegalArgumentException("course not in course plan");
+		}
+	}
+
+	/**
+	 * @return 1 for Period 1, 2 for Period 2, 3 for Period 3, 4 for Period 4 and -1
+	 *         if the CoursePlan is finished
+	 */
+	public int getFirstIncompletePeriod() {
+		if (this.utilityByCourseInPeriod1.size() == NUM_OF_COURSES_PER_PERIOD) {
+			if (this.utilityByCourseInPeriod2.size() == NUM_OF_COURSES_PER_PERIOD) {
+				if (this.utilityByCourseInPeriod3.size() == NUM_OF_COURSES_PER_PERIOD) {
+					if (this.utilityByCourseInPeriod4.size() == NUM_OF_COURSES_PER_PERIOD) {
+						throw new IllegalStateException();
+					} else {
+						return 4;
+					}
+				} else {
+					return 3;
+				}
+			} else {
+				return 2;
+			}
+		} else {
+			return 1;
 		}
 	}
 
@@ -66,22 +217,21 @@ public class CoursePlan {
 	}
 
 	public Set<String> getCoursesInPeriod1() {
-		return this.coursesInPeriod1;
+		return Collections.unmodifiableSet(this.utilityByCourseInPeriod1.keySet());
 	}
 
 	public void addCourseInPeriod1(final String course, final int utility) {
 		Objects.requireNonNull(course);
 
-		if ((this.coursesInPeriod1.size() == NUM_OF_COURSES_PER_PERIOD) || getAllCourses().contains(course)
+		if ((this.utilityByCourseInPeriod1.size() == NUM_OF_COURSES_PER_PERIOD) || getAllCourses().contains(course)
 				|| this.coursesCausingBranchInPeriod1.contains(course)) {
 			throw new IllegalStateException();
 		}
-		this.coursesInPeriod1.add(course);
-		this.utility += utility;
+		this.utilityByCourseInPeriod1.put(course, utility);
 	}
 
 	public Set<String> getCoursesCausingBranchInPeriod1() {
-		return this.coursesCausingBranchInPeriod1;
+		return Collections.unmodifiableSet(this.coursesCausingBranchInPeriod1);
 	}
 
 	public void addCourseCausingBranchInPeriod1(final String course) {
@@ -90,23 +240,22 @@ public class CoursePlan {
 	}
 
 	public Set<String> getCoursesInPeriod2() {
-		return this.coursesInPeriod2;
+		return Collections.unmodifiableSet(this.utilityByCourseInPeriod2.keySet());
 	}
 
 	public void addCourseInPeriod2(final String course, final int utility) {
 		Objects.requireNonNull(course);
 
-		if ((this.coursesInPeriod1.size() != NUM_OF_COURSES_PER_PERIOD)
-				|| (this.coursesInPeriod2.size() == NUM_OF_COURSES_PER_PERIOD) || getAllCourses().contains(course)
-				|| this.coursesCausingBranchInPeriod1.contains(course)) {
+		if ((this.utilityByCourseInPeriod1.size() != NUM_OF_COURSES_PER_PERIOD)
+				|| (this.utilityByCourseInPeriod2.size() == NUM_OF_COURSES_PER_PERIOD)
+				|| getAllCourses().contains(course) || this.coursesCausingBranchInPeriod1.contains(course)) {
 			throw new IllegalStateException();
 		}
-		this.coursesInPeriod2.add(course);
-		this.utility += utility;
+		this.utilityByCourseInPeriod2.put(course, utility);
 	}
 
 	public Set<String> getCoursesCausingBranchInPeriod2() {
-		return this.coursesCausingBranchInPeriod2;
+		return Collections.unmodifiableSet(this.coursesCausingBranchInPeriod2);
 	}
 
 	public void addCourseCausingBranchInPeriod2(final String course) {
@@ -115,24 +264,23 @@ public class CoursePlan {
 	}
 
 	public Set<String> getCoursesInPeriod3() {
-		return this.coursesInPeriod3;
+		return Collections.unmodifiableSet(this.utilityByCourseInPeriod3.keySet());
 	}
 
 	public void addCourseInPeriod3(final String course, final int utility) {
 		Objects.requireNonNull(course);
 
-		if ((this.coursesInPeriod1.size() != NUM_OF_COURSES_PER_PERIOD)
-				|| (this.coursesInPeriod2.size() != NUM_OF_COURSES_PER_PERIOD)
-				|| (this.coursesInPeriod3.size() == NUM_OF_COURSES_PER_PERIOD) || getAllCourses().contains(course)
-				|| this.coursesCausingBranchInPeriod1.contains(course)) {
+		if ((this.utilityByCourseInPeriod1.size() != NUM_OF_COURSES_PER_PERIOD)
+				|| (this.utilityByCourseInPeriod2.size() != NUM_OF_COURSES_PER_PERIOD)
+				|| (this.utilityByCourseInPeriod3.size() == NUM_OF_COURSES_PER_PERIOD)
+				|| getAllCourses().contains(course) || this.coursesCausingBranchInPeriod1.contains(course)) {
 			throw new IllegalStateException();
 		}
-		this.coursesInPeriod3.add(course);
-		this.utility += utility;
+		this.utilityByCourseInPeriod3.put(course, utility);
 	}
 
 	public Set<String> getCoursesCausingBranchInPeriod3() {
-		return this.coursesCausingBranchInPeriod3;
+		return Collections.unmodifiableSet(this.coursesCausingBranchInPeriod3);
 	}
 
 	public void addCourseCausingBranchInPeriod3(final String course) {
@@ -141,25 +289,24 @@ public class CoursePlan {
 	}
 
 	public Set<String> getCoursesInPeriod4() {
-		return this.coursesInPeriod4;
+		return Collections.unmodifiableSet(this.utilityByCourseInPeriod4.keySet());
 	}
 
 	public void addCourseInPeriod4(final String course, final int utility) {
 		Objects.requireNonNull(course);
 
-		if ((this.coursesInPeriod1.size() != NUM_OF_COURSES_PER_PERIOD)
-				|| (this.coursesInPeriod2.size() != NUM_OF_COURSES_PER_PERIOD)
-				|| (this.coursesInPeriod3.size() != NUM_OF_COURSES_PER_PERIOD)
-				|| (this.coursesInPeriod4.size() == NUM_OF_COURSES_PER_PERIOD) || getAllCourses().contains(course)
-				|| this.coursesCausingBranchInPeriod1.contains(course)) {
+		if ((this.utilityByCourseInPeriod1.size() != NUM_OF_COURSES_PER_PERIOD)
+				|| (this.utilityByCourseInPeriod2.size() != NUM_OF_COURSES_PER_PERIOD)
+				|| (this.utilityByCourseInPeriod3.size() != NUM_OF_COURSES_PER_PERIOD)
+				|| (this.utilityByCourseInPeriod4.size() == NUM_OF_COURSES_PER_PERIOD)
+				|| getAllCourses().contains(course) || this.coursesCausingBranchInPeriod1.contains(course)) {
 			throw new IllegalStateException();
 		}
-		this.coursesInPeriod4.add(course);
-		this.utility += utility;
+		this.utilityByCourseInPeriod4.put(course, utility);
 	}
 
 	public Set<String> getCoursesCausingBranchInPeriod4() {
-		return this.coursesCausingBranchInPeriod4;
+		return Collections.unmodifiableSet(this.coursesCausingBranchInPeriod4);
 	}
 
 	public void addCourseCausingBranchInPeriod4(final String course) {
@@ -168,37 +315,17 @@ public class CoursePlan {
 	}
 
 	public int getUtility() {
-		return this.utility;
-	}
-
-	/**
-	 * @return 1 for Period 1, 2 for Period 2, 3 for Period 3, 4 for Period 4 and -1
-	 *         if the CoursePlan is finished
-	 */
-	public int getFirstIncompletePeriod() {
-		if (this.coursesInPeriod1.size() == NUM_OF_COURSES_PER_PERIOD) {
-			if (this.coursesInPeriod2.size() == NUM_OF_COURSES_PER_PERIOD) {
-				if (this.coursesInPeriod3.size() == NUM_OF_COURSES_PER_PERIOD) {
-					if (this.coursesInPeriod4.size() == NUM_OF_COURSES_PER_PERIOD) {
-						throw new IllegalStateException();
-					} else {
-						return 4;
-					}
-				} else {
-					return 3;
-				}
-			} else {
-				return 2;
-			}
-		} else {
-			return 1;
-		}
+		return this.utilityByCourseInPeriod1.values().stream().mapToInt(Integer::valueOf).sum()
+				+ this.utilityByCourseInPeriod2.values().stream().mapToInt(Integer::valueOf).sum()
+				+ this.utilityByCourseInPeriod3.values().stream().mapToInt(Integer::valueOf).sum()
+				+ this.utilityByCourseInPeriod4.values().stream().mapToInt(Integer::valueOf).sum();
 	}
 
 	@Override
 	public String toString() {
-		return "CoursePlan [coursesInPeriod1=" + this.coursesInPeriod1 + ", coursesInPeriod2=" + this.coursesInPeriod2
-				+ ", coursesInPeriod3=" + this.coursesInPeriod3 + ", coursesInPeriod4=" + this.coursesInPeriod4 + "]";
+		return "CoursePlan [utilityByCourseInPeriod1=" + this.utilityByCourseInPeriod1 + ", utilityByCourseInPeriod2="
+				+ this.utilityByCourseInPeriod2 + ", utilityByCourseInPeriod3=" + this.utilityByCourseInPeriod3
+				+ ", utilityByCourseInPeriod4=" + this.utilityByCourseInPeriod4 + "]";
 	}
 
 }
