@@ -30,12 +30,12 @@ public class CoursePlan {
 		super();
 
 		// Copy constructor
-		this.utilityByCourseInPeriod1 = coursePlan.utilityByCourseInPeriod1;
-		this.utilityByCourseInPeriod2 = coursePlan.utilityByCourseInPeriod2;
-		this.utilityByCourseInPeriod3 = coursePlan.utilityByCourseInPeriod3;
-		this.utilityByCourseInPeriod4 = coursePlan.utilityByCourseInPeriod4;
+		this.utilityByCourseInPeriod1 = new HashMap<>(coursePlan.utilityByCourseInPeriod1);
+		this.utilityByCourseInPeriod2 = new HashMap<>(coursePlan.utilityByCourseInPeriod2);
+		this.utilityByCourseInPeriod3 = new HashMap<>(coursePlan.utilityByCourseInPeriod3);
+		this.utilityByCourseInPeriod4 = new HashMap<>(coursePlan.utilityByCourseInPeriod4);
 
-		// TODO: causesBranch include
+		// TODO: causesBranch include?
 	}
 
 	public Set<String> getAllCourses() {
@@ -44,6 +44,27 @@ public class CoursePlan {
 		allCourses.addAll(this.utilityByCourseInPeriod2.keySet());
 		allCourses.addAll(this.utilityByCourseInPeriod3.keySet());
 		allCourses.addAll(this.utilityByCourseInPeriod4.keySet());
+		return Collections.unmodifiableSet(allCourses);
+	}
+
+	public Set<String> getAllCoursesUntilPeriod(final int period) {
+		final Set<String> allCourses = new HashSet<>();
+
+		switch (period) {
+		case 4:
+			allCourses.addAll(this.utilityByCourseInPeriod4.keySet());
+		case 3:
+			allCourses.addAll(this.utilityByCourseInPeriod3.keySet());
+		case 2:
+			allCourses.addAll(this.utilityByCourseInPeriod2.keySet());
+		case 1:
+			allCourses.addAll(this.utilityByCourseInPeriod1.keySet());
+		case 0:
+			break;
+		default:
+			throw new IllegalArgumentException();
+		}
+
 		return Collections.unmodifiableSet(allCourses);
 	}
 
@@ -80,6 +101,8 @@ public class CoursePlan {
 	public static CoursePlan branchByRemovingCourse(final CoursePlan coursePlan, final String course) {
 		Objects.requireNonNull(course);
 
+		System.out.println("Branching by removing course " + course);
+
 		final CoursePlan branch = new CoursePlan(coursePlan);
 
 		if (branch.utilityByCourseInPeriod1.remove(course) != null) {
@@ -106,6 +129,8 @@ public class CoursePlan {
 	public static CoursePlan branchByDemandingPrerequisites(final CoursePlan coursePlan,
 			final Set<PrerequisiteDemand> prerequisiteDemands) {
 		Objects.requireNonNull(prerequisiteDemands);
+
+		System.out.println("Branching by demanding prerequisites " + prerequisiteDemands);
 
 		final CoursePlan branch = new CoursePlan(coursePlan);
 
@@ -194,19 +219,19 @@ public class CoursePlan {
 		}
 	}
 
-	public boolean isPeriod1Full() {
+	private boolean isPeriod1Full() {
 		return this.utilityByCourseInPeriod1.size() == NUM_OF_COURSES_PER_PERIOD;
 	}
 
-	public boolean isPeriod2Full() {
+	private boolean isPeriod2Full() {
 		return this.utilityByCourseInPeriod2.size() == NUM_OF_COURSES_PER_PERIOD;
 	}
 
-	public boolean isPeriod3Full() {
+	private boolean isPeriod3Full() {
 		return this.utilityByCourseInPeriod3.size() == NUM_OF_COURSES_PER_PERIOD;
 	}
 
-	public boolean isPeriod4Full() {
+	private boolean isPeriod4Full() {
 		return this.utilityByCourseInPeriod4.size() == NUM_OF_COURSES_PER_PERIOD;
 	}
 
@@ -229,21 +254,24 @@ public class CoursePlan {
 		}
 	}
 
-	public Set<String> getCoursesInPeriod1() {
+	private Set<String> getCoursesInPeriod1() {
 		return Collections.unmodifiableSet(this.utilityByCourseInPeriod1.keySet());
 	}
 
-	public void addCourseInPeriod1(final String course, final int utility) {
+	private void addCourseInPeriod1(final String course, final int utility) {
 		Objects.requireNonNull(course);
 
-		if ((this.utilityByCourseInPeriod1.size() == NUM_OF_COURSES_PER_PERIOD) || getAllCourses().contains(course)
-				|| this.coursesCausingBranchInPeriod1.contains(course)) {
-			throw new IllegalStateException();
+		if (isPeriod1Full()) {
+			throw new IllegalStateException("Period 1 already full");
+		} else if (getAllCourses().contains(course)) {
+			throw new IllegalStateException("Duplicate course " + course);
+		} else if (this.coursesCausingBranchInPeriod1.contains(course)) {
+			throw new IllegalStateException("Course " + course + " was causing branch");
 		}
 		this.utilityByCourseInPeriod1.put(course, utility);
 	}
 
-	public Set<String> getCoursesCausingBranchInPeriod1() {
+	private Set<String> getCoursesCausingBranchInPeriod1() {
 		return Collections.unmodifiableSet(this.coursesCausingBranchInPeriod1);
 	}
 
@@ -252,21 +280,24 @@ public class CoursePlan {
 		this.coursesCausingBranchInPeriod1.add(course);
 	}
 
-	public Set<String> getCoursesInPeriod2() {
+	private Set<String> getCoursesInPeriod2() {
 		return Collections.unmodifiableSet(this.utilityByCourseInPeriod2.keySet());
 	}
 
 	public void addCourseInPeriod2(final String course, final int utility) {
 		Objects.requireNonNull(course);
 
-		if ((this.utilityByCourseInPeriod2.size() == NUM_OF_COURSES_PER_PERIOD) || getAllCourses().contains(course)
-				|| this.coursesCausingBranchInPeriod2.contains(course)) {
-			throw new IllegalStateException();
+		if (isPeriod2Full()) {
+			throw new IllegalStateException("Period 2 already full");
+		} else if (getAllCourses().contains(course)) {
+			throw new IllegalStateException("Duplicate course " + course);
+		} else if (this.coursesCausingBranchInPeriod2.contains(course)) {
+			throw new IllegalStateException("Course " + course + " was causing branch");
 		}
 		this.utilityByCourseInPeriod2.put(course, utility);
 	}
 
-	public Set<String> getCoursesCausingBranchInPeriod2() {
+	private Set<String> getCoursesCausingBranchInPeriod2() {
 		return Collections.unmodifiableSet(this.coursesCausingBranchInPeriod2);
 	}
 
@@ -275,21 +306,24 @@ public class CoursePlan {
 		this.coursesCausingBranchInPeriod2.add(course);
 	}
 
-	public Set<String> getCoursesInPeriod3() {
+	private Set<String> getCoursesInPeriod3() {
 		return Collections.unmodifiableSet(this.utilityByCourseInPeriod3.keySet());
 	}
 
 	public void addCourseInPeriod3(final String course, final int utility) {
 		Objects.requireNonNull(course);
 
-		if ((this.utilityByCourseInPeriod3.size() == NUM_OF_COURSES_PER_PERIOD) || getAllCourses().contains(course)
-				|| this.coursesCausingBranchInPeriod3.contains(course)) {
-			throw new IllegalStateException();
+		if (isPeriod3Full()) {
+			throw new IllegalStateException("Period 3 already full");
+		} else if (getAllCourses().contains(course)) {
+			throw new IllegalStateException("Duplicate course " + course);
+		} else if (this.coursesCausingBranchInPeriod3.contains(course)) {
+			throw new IllegalStateException("Course " + course + " was causing branch");
 		}
 		this.utilityByCourseInPeriod3.put(course, utility);
 	}
 
-	public Set<String> getCoursesCausingBranchInPeriod3() {
+	private Set<String> getCoursesCausingBranchInPeriod3() {
 		return Collections.unmodifiableSet(this.coursesCausingBranchInPeriod3);
 	}
 
@@ -298,21 +332,24 @@ public class CoursePlan {
 		this.coursesCausingBranchInPeriod3.add(course);
 	}
 
-	public Set<String> getCoursesInPeriod4() {
+	private Set<String> getCoursesInPeriod4() {
 		return Collections.unmodifiableSet(this.utilityByCourseInPeriod4.keySet());
 	}
 
 	public void addCourseInPeriod4(final String course, final int utility) {
 		Objects.requireNonNull(course);
 
-		if ((this.utilityByCourseInPeriod4.size() == NUM_OF_COURSES_PER_PERIOD) || getAllCourses().contains(course)
-				|| this.coursesCausingBranchInPeriod4.contains(course)) {
-			throw new IllegalStateException();
+		if (isPeriod4Full()) {
+			throw new IllegalStateException("Period 4 already full");
+		} else if (getAllCourses().contains(course)) {
+			throw new IllegalStateException("Duplicate course " + course);
+		} else if (this.coursesCausingBranchInPeriod4.contains(course)) {
+			throw new IllegalStateException("Course " + course + " was causing branch");
 		}
 		this.utilityByCourseInPeriod4.put(course, utility);
 	}
 
-	public Set<String> getCoursesCausingBranchInPeriod4() {
+	private Set<String> getCoursesCausingBranchInPeriod4() {
 		return Collections.unmodifiableSet(this.coursesCausingBranchInPeriod4);
 	}
 
