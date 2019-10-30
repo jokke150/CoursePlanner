@@ -130,6 +130,9 @@ public class Agent {
 						// Only one valid course
 						coursePlan.addCourseInPeriod(validCourses.iterator().next(), period, utility);
 						QueryEngine.getInstance().dumpInstancesShortFormCache();
+						if (coursePlan.isPeriodFull(period)) {
+							break;
+						}
 					} else if (validCourses.size() > 1) {
 						// Multiple valid courses
 
@@ -148,6 +151,9 @@ public class Agent {
 						coursePlan.addCourseInPeriod(coursesByNumOfFriends.get(highestNumOfFriends).iterator().next(),
 								period, utility);
 						QueryEngine.getInstance().dumpInstancesShortFormCache();
+						if (coursePlan.isPeriodFull(period)) {
+							break;
+						}
 
 //					if (coursesByNumOfFriends.get(highestNumOfFriends).size() == 1) {
 //						// Only one valid course with highest number of friends
