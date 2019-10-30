@@ -19,7 +19,6 @@ public class CoursePlanner {
 
 	public static void main(final String[] args)
 			throws IOException, OWLOntologyCreationException, ClassNotFoundException {
-		System.out.println("Hello World");
 
 		if (READ_CACHE) {
 			QueryEngine.getInstance().readInstancesShortFormCache();
@@ -33,10 +32,8 @@ public class CoursePlanner {
 
 //		final Preferences preferences = new Preferences(reader);
 //		preferences.askForPreferences();
-/*
-		final Set<String> preferredCourses = Arrays.asList("IntroductiontoNaturalSciences", "IntelligentAgents",
-				"LogicAndLanguage", "MachineLearning", "LogicAndComputation", "Statistics", "NaturalLanguageProcessing",
-				"BusinessIntelligence", "ComputerVision").stream().collect(Collectors.toSet());
+
+		final Set<String> preferredCourses = Arrays.asList("MobileInteraction").stream().collect(Collectors.toSet());
 		final Set<String> preferredTopics = Arrays.asList("DescriptionLogic", "Optimisation").stream()
 				.collect(Collectors.toSet());
 		final Set<String> preferredLecturers = Arrays.asList("Lecturer1").stream().collect(Collectors.toSet());
@@ -52,10 +49,9 @@ public class CoursePlanner {
 		final Preferences preferences = new Preferences(preferredCourses, preferredTopics, preferredLecturers,
 				preferredDays, 3, 6, 5, 8, dislikedCourses, dislikedTopics, dislikedLecturers, dislikedDays, 7, 2, 1,
 				8);
-*/
 
-		final Preferences preferences = new Preferences(reader);
-		preferences.askForPreferences();
+//		final Preferences preferences = new Preferences(reader);
+//		preferences.askForPreferences();
 
 		reader.close();
 
