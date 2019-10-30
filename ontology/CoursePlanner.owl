@@ -784,6 +784,14 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#FlorisBex -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#FlorisBex">
+        <rdf:type rdf:resource="http:/uu.nl/Lecturer"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N2 -->
 
     <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N2">
@@ -817,6 +825,30 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#StudentA -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#StudentA">
+        <rdf:type rdf:resource="http:/uu.nl/Student"/>
+        <uu:prefersCourse rdf:resource="http:/uu.nl/IntelligentAgents"/>
+        <uu:prefersDay rdf:resource="http:/uu.nl/Wednesday"/>
+        <uu:prefersLecturer rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#FlorisBex"/>
+        <uu:prefersTopic rdf:resource="http:/uu.nl/GameTheory"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#StudentB -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#StudentB">
+        <rdf:type rdf:resource="http:/uu.nl/Student"/>
+        <uu:prefersCourse rdf:resource="http:/uu.nl/ResearchInternshipAI"/>
+        <uu:prefersDay rdf:resource="http:/uu.nl/Monday"/>
+        <uu:prefersLecturer rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PinarYolum"/>
+        <uu:prefersTopic rdf:resource="http:/uu.nl/Logic"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#StudentC -->
 
     <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#StudentC">
@@ -824,6 +856,18 @@
         <uu:hasTaken rdf:resource="http:/uu.nl/BusinessIntelligence"/>
         <uu:hasTaken rdf:resource="http:/uu.nl/CrowdSimulation"/>
         <uu:hasTaken rdf:resource="http:/uu.nl/Graphics"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#StudentD -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#StudentD">
+        <rdf:type rdf:resource="http:/uu.nl/Student"/>
+        <uu:prefersCourse rdf:resource="http:/uu.nl/GameDesign"/>
+        <uu:prefersDay rdf:resource="http:/uu.nl/Wednesday"/>
+        <uu:prefersLecturer rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#BobMarley"/>
+        <uu:prefersTopic rdf:resource="http:/uu.nl/DatabaseSystems"/>
     </owl:NamedIndividual>
     
 
@@ -1151,6 +1195,7 @@
     <!-- http:/uu.nl/MobileInteraction -->
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/MobileInteraction">
+        <rdf:type rdf:resource="http:/uu.nl/CoursesPerPeriod2"/>
         <rdf:type rdf:resource="http:/uu.nl/CoursesPerPeriod3"/>
         <uu:uses rdf:resource="http:/uu.nl/Surveys"/>
         <rdfs:label>MobileInteraction</rdfs:label>
