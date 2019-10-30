@@ -801,6 +801,14 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#ParisHilton -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#ParisHilton">
+        <rdf:type rdf:resource="http:/uu.nl/Lecturer"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PinarYolum -->
 
     <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PinarYolum">
@@ -892,6 +900,9 @@
     <owl:NamedIndividual rdf:about="http:/uu.nl/ComputerVision">
         <rdf:type rdf:resource="http:/uu.nl/CoursesPerPeriod1"/>
         <uu:isOn rdf:resource="http:/uu.nl/Optimisation"/>
+        <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PinarYolum"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Tuesday"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Wednesday"/>
         <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
         <rdfs:label>ComputerVision</rdfs:label>
     </owl:NamedIndividual>
@@ -927,6 +938,8 @@
     <owl:NamedIndividual rdf:about="http:/uu.nl/CrowdSimulation">
         <rdf:type rdf:resource="http:/uu.nl/CoursesPerPeriod1"/>
         <uu:isOn rdf:resource="http:/uu.nl/Optimisation"/>
+        <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#ParisHilton"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Monday"/>
         <uu:uses rdf:resource="http:/uu.nl/Simulation"/>
         <rdfs:label>CrowdSimulation</rdfs:label>
     </owl:NamedIndividual>
@@ -989,10 +1002,12 @@
     <!-- http:/uu.nl/Graphics -->
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/Graphics">
-        <rdf:type rdf:resource="http:/uu.nl/Course"/>
+        <rdf:type rdf:resource="http:/uu.nl/CoursesPerPeriod1"/>
         <uu:isOn rdf:resource="http:/uu.nl/Optimisation"/>
         <uu:isOn rdf:resource="http:/uu.nl/PathTracing"/>
         <uu:isOn rdf:resource="http:/uu.nl/RayTracing"/>
+        <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#BobMarley"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Friday"/>
         <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
         <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AdvancedGraphics</rdfs:label>
     </owl:NamedIndividual>
