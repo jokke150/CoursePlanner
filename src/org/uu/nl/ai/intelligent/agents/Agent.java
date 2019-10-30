@@ -88,8 +88,8 @@ public class Agent {
 							final Set<PrerequisiteDemand> prerequisiteDemands = new HashSet<>();
 							// Feasible to take prerequisites in previous periods?
 							for (final String prerequisite : coursePrerequisites) {
-								final int periodForPrerequisite = canTakePrereqInPrevPeriod(prerequisite, period,
-										coursesInPeriods);
+								final int periodForPrerequisite = canTakePrereqInPrevPeriod(prerequisite, startPeriod,
+										period, coursesInPeriods);
 								final int prereqUtility = calculateUtility(prerequisite);
 								if (periodForPrerequisite != 0) {
 									final PrerequisiteDemand prerequisiteDemand = new PrerequisiteDemand(prerequisite,
@@ -158,14 +158,14 @@ public class Agent {
 
 	}
 
-	private int canTakePrereqInPrevPeriod(final String prerequisite, final int currentPeriod,
+	private int canTakePrereqInPrevPeriod(final String prerequisite, final int startPeriod, final int currentPeriod,
 			final List<Set<String>> coursesInPeriods) {
 
 		// We will not find any possible period but just the first occurence of a
 		// prerequisite
 
-		for (int period = 1; period < currentPeriod; period++) {
-			final Set<String> coursesInPeriod = coursesInPeriods.get(period - 1);
+		for (int period = startPeriod; period < currentPeriod; period++) {
+			final Set<String> coursesInPeriod = coursesInPeriods.get(period - startPeriod);
 			if (coursesInPeriod.contains(prerequisite)) {
 				return period;
 			}
@@ -309,7 +309,7 @@ public class Agent {
 		final Map<String, Set<String>> prerequisitesByCourse = new HashMap<>();
 		for (final String course : courses) {
 			final Set<String> coursePrerequisites = QueryEngine.getInstance()
-					.getInstancesShortForm("hasPrerequisite value " + course, false);
+					.getInstancesShortForm("isPrerequisite value " + course, false);
 			prerequisitesByCourse.put(course, coursePrerequisites);
 		}
 		return prerequisitesByCourse;

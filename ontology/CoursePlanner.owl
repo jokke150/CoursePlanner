@@ -800,6 +800,11 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N1 -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N1"/>
+    
+
 
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N2 -->
 
@@ -887,6 +892,12 @@
         <rdf:type rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Classroom"/>
         <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Technoplex"/>
     </owl:NamedIndividual>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T2 -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T2"/>
     
 
 
@@ -1083,7 +1094,6 @@
     <owl:NamedIndividual rdf:about="http:/uu.nl/IntelligentAgents">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod2"/>
         <hasPrerequisite rdf:resource="http:/uu.nl/BusinessIntelligence"/>
-        <hasPrerequisite rdf:resource="http:/uu.nl/IntelligentAgents"/>
         <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PinarYolum"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Monday"/>

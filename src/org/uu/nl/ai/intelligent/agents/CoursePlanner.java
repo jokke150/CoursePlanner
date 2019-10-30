@@ -3,7 +3,9 @@ package org.uu.nl.ai.intelligent.agents;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -13,7 +15,7 @@ import org.uu.nl.ai.intelligent.agents.query.QueryEngine;
 
 public class CoursePlanner {
 	public static final String ONTOLOGY_PATH = "ontology/CoursePlanner.owl";
-	public static final boolean READ_CACHE = false;
+	public static final boolean READ_CACHE = true;
 
 	public static void main(final String[] args)
 			throws IOException, OWLOntologyCreationException, ClassNotFoundException {
@@ -44,7 +46,7 @@ public class CoursePlanner {
 		final Set<String> dislikedDays = Arrays.asList("Thursday", "Wednesday").stream().collect(Collectors.toSet());
 
 		final Preferences preferences = new Preferences(preferredCourses, preferredTopics, preferredLecturers,
-				preferredDays, 3, 6, 5, 8, dislikedCourses, dislikedTopics, dislikedLecturers, dislikedDays, 7, 2, 1,
+				preferredDays, 10, 1, 5, 8, dislikedCourses, dislikedTopics, dislikedLecturers, dislikedDays, 2, 2, 1,
 				8);
 
 //		final Preferences preferences = new Preferences(reader);
@@ -55,7 +57,9 @@ public class CoursePlanner {
 		final Agent agent = new Agent(student, preferences);
 		final Set<CoursePlan> bestCoursePlans = agent.getBestCoursePlans();
 
-		printCoursePlans(bestCoursePlans);
+		System.out.println(bestCoursePlans);
+
+		// printCoursePlans(bestCoursePlans);
 
 	}
 
@@ -88,25 +92,28 @@ public class CoursePlanner {
 	}
 
 	private static void printCoursePlans(final Set<CoursePlan> coursePlans)
-			throws IOException, OWLOntologyCreationException, ClassNotFoundException  {
-		QueryEngine queryEngine = QueryEngine.getInstance();
+			throws IOException, OWLOntologyCreationException, ClassNotFoundException {
+		final QueryEngine queryEngine = QueryEngine.getInstance();
 		Set<String> courses;
 		String building;
 		String classroom;
 		String day;
 
-		for(CoursePlan coursePlan : coursePlans){
+		for (final CoursePlan coursePlan : coursePlans) {
 			System.out.println("------------------------------");
 			System.out.println("This is your study plan:\n");
-			for(int i=1; i<=4; i++){
+			for (int i = 1; i <= 4; i++) {
 				System.out.println("PERIOD " + i + ":");
 				courses = coursePlan.getCoursesInPeriod(i);
 
-				for(String course : courses){
-					building = String.join("",queryEngine.getInstancesShortForm("Building houses value "+ course,false));
-					classroom = String.join("",queryEngine.getInstancesShortForm("Classroom houses value "+ course,false));
-					day = String.join("",queryEngine.getInstancesShortForm("Day comprisesCourse value "+ course,false));
-					System.out.println("*** " + course + " - every "+ day + " in " + classroom + ", "+ building);
+				for (final String course : courses) {
+					building = String.join("",
+							queryEngine.getInstancesShortForm("Building and houses value " + course, false));
+					classroom = String.join("",
+							queryEngine.getInstancesShortForm("Classroom and houses value " + course, false));
+					day = String.join("",
+							queryEngine.getInstancesShortForm("Day and comprisesCourse value " + course, false));
+					System.out.println("*** " + course + " - every " + day + " in " + classroom + ", " + building);
 				}
 				System.out.println("\n");
 			}

@@ -24,4 +24,10 @@ public class PrerequisiteDemand {
 		return this.period;
 	}
 
+	@Override
+	public String toString() {
+		return "PrerequisiteDemand [prerequisite=" + this.prerequisite + ", utility=" + this.utility + ", period="
+				+ this.period + "]";
+	}
+
 }

@@ -142,15 +142,19 @@ public class CoursePlan {
 			case 1:
 				switchCourseWithLowestUtilCourse(prerequisiteDemand.getPrerequisite(), prerequisiteDemand.getUtility(),
 						branch.utilityByCourseInPeriod1, prerequisites);
+				break;
 			case 2:
 				switchCourseWithLowestUtilCourse(prerequisiteDemand.getPrerequisite(), prerequisiteDemand.getUtility(),
 						branch.utilityByCourseInPeriod2, prerequisites);
+				break;
 			case 3:
 				switchCourseWithLowestUtilCourse(prerequisiteDemand.getPrerequisite(), prerequisiteDemand.getUtility(),
 						branch.utilityByCourseInPeriod3, prerequisites);
+				break;
 			case 4:
 				switchCourseWithLowestUtilCourse(prerequisiteDemand.getPrerequisite(), prerequisiteDemand.getUtility(),
 						branch.utilityByCourseInPeriod4, prerequisites);
+				break;
 			default:
 				throw new IllegalArgumentException();
 			}
