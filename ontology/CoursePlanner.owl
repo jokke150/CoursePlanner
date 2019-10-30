@@ -1115,6 +1115,7 @@
     <owl:NamedIndividual rdf:about="http:/uu.nl/Student1">
         <rdf:type rdf:resource="http:/uu.nl/Student"/>
         <hasFriend rdf:resource="http:/uu.nl/Student2"/>
+        <uu:hasTaken rdf:resource="http:/uu.nl/DigitalEthics"/>
         <uu:prefersDay rdf:resource="http:/uu.nl/Monday"/>
         <uu:takes rdf:resource="http:/uu.nl/IntelligentAgents"/>
         <uu:takes rdf:resource="http:/uu.nl/Mathematics"/>
