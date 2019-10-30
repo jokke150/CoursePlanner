@@ -1060,7 +1060,6 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/GameDesign">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod2"/>
-        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#N2"/>
         <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T1"/>
         <uu:isOn rdf:resource="http:/uu.nl/GameTheory"/>
         <uu:isOn rdf:resource="http:/uu.nl/Marketing"/>
