@@ -817,6 +817,17 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#StudentC -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#StudentC">
+        <rdf:type rdf:resource="http:/uu.nl/Student"/>
+        <uu:hasTaken rdf:resource="http:/uu.nl/BusinessIntelligence"/>
+        <uu:hasTaken rdf:resource="http:/uu.nl/CrowdSimulation"/>
+        <uu:hasTaken rdf:resource="http:/uu.nl/Graphics"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T1 -->
 
     <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#T1">
