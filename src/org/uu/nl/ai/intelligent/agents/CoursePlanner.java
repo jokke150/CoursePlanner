@@ -15,11 +15,10 @@ import org.uu.nl.ai.intelligent.agents.query.QueryEngine;
 
 public class CoursePlanner {
 	public static final String ONTOLOGY_PATH = "ontology/CoursePlanner.owl";
-	public static final boolean READ_CACHE = true;
+	public static final boolean READ_CACHE = false;
 
 	public static void main(final String[] args)
 			throws IOException, OWLOntologyCreationException, ClassNotFoundException {
-		System.out.println("Hello World");
 
 		if (READ_CACHE) {
 			QueryEngine.getInstance().readInstancesShortFormCache();
