@@ -19,6 +19,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.uu.nl.ai.intelligent.agents.data.CoursePlan;
 import org.uu.nl.ai.intelligent.agents.data.Preferences;
 import org.uu.nl.ai.intelligent.agents.data.PrerequisiteDemand;
+import org.uu.nl.ai.intelligent.agents.data.PrerequisiteSubstitute;
 import org.uu.nl.ai.intelligent.agents.query.QueryEngine;
 
 public class Agent {
@@ -79,28 +80,16 @@ public class Agent {
 							coursePlans.addAll(alternativeCoursePlans);
 						}
 
-						// Prerequisites not met? Branch if it is feasible to take them in previous
-						// periods and skip course
+						// Check for prerequisites
 						final Set<String> coursePrerequisites = prerequisitesByCourse.get(course);
 						final boolean prerequisiesMet = hasTakenPrerequisites(prerequisitesByCourse.get(course),
 								coursesAlreadyTaken);
 						if (!prerequisiesMet) {
-							final Set<PrerequisiteDemand> prerequisiteDemands = new HashSet<>();
-							// Feasible to take prerequisites in previous periods?
-							for (final String prerequisite : coursePrerequisites) {
-								final int periodForPrerequisite = canTakePrereqInPrevPeriod(prerequisite, startPeriod,
-										period, coursesInPeriods);
-								final int prereqUtility = calculateUtility(prerequisite);
-								if (periodForPrerequisite != 0) {
-									final PrerequisiteDemand prerequisiteDemand = new PrerequisiteDemand(prerequisite,
-											prereqUtility, periodForPrerequisite);
-									prerequisiteDemands.add(prerequisiteDemand);
-								} else {
-									// Not all prerequisites can be met in previous periods
-									break;
-								}
-							}
-							if (prerequisiteDemands.size() == coursePrerequisites.size()) {
+							// Prerequisites not met? Branch if it is feasible to take them in previous
+							// periods and skip course
+							final Set<PrerequisiteDemand> prerequisiteDemands = getPrerequisiteDemands(
+									coursePrerequisites, startPeriod, period, coursesInPeriods);
+							if (prerequisiteDemands != null) {
 								// All prerequisites can be met in previous periods
 								final CoursePlan branch = CoursePlan.branchByDemandingPrerequisites(coursePlan,
 										prerequisiteDemands);
@@ -119,9 +108,6 @@ public class Agent {
 					if (validCourses.size() == 1) {
 						// Only one valid course
 						coursePlan.addCourseInPeriod(validCourses.iterator().next(), period, utility);
-						if (coursePlan.isPeriodFull(period)) {
-							break;
-						}
 					} else if (validCourses.size() > 1) {
 						// Multiple valid courses
 
@@ -138,13 +124,14 @@ public class Agent {
 						final int highestNumOfFriends = coursesByNumOfFriends.lastKey();
 						coursePlan.addCourseInPeriod(coursesByNumOfFriends.get(highestNumOfFriends).iterator().next(),
 								period, utility);
-						if (coursePlan.isPeriodFull(period)) {
-							break;
-						}
-
 					} else {
 						// No valid courses with highest utility -> Next utility
 						continue;
+					}
+
+					// Stop adding courses to the course plan for this period if it is already full
+					if (coursePlan.isPeriodFull(period)) {
+						break;
 					}
 				}
 			}
@@ -158,38 +145,97 @@ public class Agent {
 
 	}
 
-	private int canTakePrereqInPrevPeriod(final String prerequisite, final int startPeriod, final int currentPeriod,
-			final List<Set<String>> coursesInPeriods) {
+	private boolean hasTakenPrerequisites(final Set<String> coursePrerequisites,
+			final Set<String> coursesTakenByStudent)
+			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
 
-		// We will not find any possible period but just the first occurence of a
-		// prerequisite
-
-		for (int period = startPeriod; period < currentPeriod; period++) {
-			final Set<String> coursesInPeriod = coursesInPeriods.get(period - startPeriod);
-			if (coursesInPeriod.contains(prerequisite)) {
-				return period;
+		for (final String coursePrerequisite : coursePrerequisites) {
+			if (!coursesTakenByStudent.contains(coursePrerequisite)) {
+				// If the student took courses similar to a prerequisite that is also acceptable
+				int similarity = 0;
+				for (final String courseTakenByStudent : coursesTakenByStudent) {
+					similarity = getSimilarity(coursePrerequisite, courseTakenByStudent);
+					if (similarity > 0) {
+						break;
+					}
+				}
+				if (similarity == 0) {
+					return false;
+				}
 			}
 		}
-
-		return 0;
-
+		return true;
 	}
 
-	private Set<CoursePlan> filterBestCoursePlans(final Set<CoursePlan> coursePlans) {
-		int bestUtility = Integer.MIN_VALUE;
-		for (final CoursePlan coursePlan : coursePlans) {
-			bestUtility = coursePlan.getUtility() > bestUtility ? coursePlan.getUtility() : bestUtility;
+	/**
+	 * A course is considered similar to another course if there is an overlap on
+	 * topics and the same research methodology is used. When more topics overlap,
+	 * the similarity is higher.
+	 *
+	 * @return 0 if not similar, + 1 for every overlapping topic
+	 */
+	private int getSimilarity(final String course1, final String course2)
+			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
+		final QueryEngine queryEngine = QueryEngine.getInstance();
+
+		final String researchMethod1 = queryEngine.getInstancesShortForm("isUsedIn value " + course1, false).iterator()
+				.next();
+		final String researchMethod2 = queryEngine.getInstancesShortForm("isUsedIn value " + course2, false).iterator()
+				.next();
+
+		if (!researchMethod1.equals(researchMethod2)) {
+			return 0;
 		}
 
-		final Set<CoursePlan> bestCoursePlans = new HashSet<>();
+		final Set<String> topics1 = queryEngine.getInstancesShortForm("taughtIn value " + course1, false);
+		final Set<String> topics2 = queryEngine.getInstancesShortForm("taughtIn value " + course2, false);
 
-		for (final CoursePlan coursePlan : coursePlans) {
-			if (coursePlan.getUtility() == bestUtility) {
-				bestCoursePlans.add(coursePlan);
+		return (int) topics1.stream().filter(i -> topics2.contains(i)).count();
+	}
+
+	/**
+	 * @return Set of PrerequisiteDemands or null if a prerequisite cannot be met in
+	 *         any preveious period - similar courses are also considered!
+	 */
+	private Set<PrerequisiteDemand> getPrerequisiteDemands(final Set<String> coursePrerequisites, final int startPeriod,
+			final int period, final List<Set<String>> coursesInPeriods)
+			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
+		final Set<PrerequisiteDemand> prerequisiteDemands = new HashSet<>();
+		for (final String prerequisite : coursePrerequisites) {
+			final PrerequisiteSubstitute prerequisiteSubstitute = checkForPrereqOrSubstInPrevPeriod(prerequisite,
+					startPeriod, period, coursesInPeriods);
+			if (prerequisiteSubstitute != null) {
+				final int prereqUtility = calculateUtility(prerequisite);
+				final PrerequisiteDemand prerequisiteDemand = new PrerequisiteDemand(prerequisiteSubstitute.getCourse(),
+						prereqUtility, prerequisiteSubstitute.getPeriod());
+				prerequisiteDemands.add(prerequisiteDemand);
+			} else {
+				// Not all prerequisites can be met in previous periods
+				return null;
 			}
 		}
+		return prerequisiteDemands;
+	}
 
-		return bestCoursePlans;
+	private PrerequisiteSubstitute checkForPrereqOrSubstInPrevPeriod(final String prerequisite, final int startPeriod,
+			final int currentPeriod, final List<Set<String>> coursesInPeriods)
+			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
+
+		// We will not return any possible period but just the first occurence of a
+		// prerequisite
+		for (int period = startPeriod; period < currentPeriod; period++) {
+			final Set<String> coursesInPeriod = coursesInPeriods.get(period - startPeriod);
+			for (final String courseInPeriod : coursesInPeriod) {
+				if (courseInPeriod.equals(prerequisite)) {
+					return new PrerequisiteSubstitute(period, prerequisite);
+				}
+				final int similarity = getSimilarity(courseInPeriod, prerequisite);
+				if (similarity > 0) {
+					return new PrerequisiteSubstitute(period, courseInPeriod);
+				}
+			}
+		}
+		return null;
 	}
 
 	private List<Set<String>> getCoursesInPeriods(final int startPeriod)
@@ -365,52 +411,21 @@ public class Agent {
 		return friendsTakingCourse.size();
 	}
 
-	private boolean hasTakenPrerequisites(final Set<String> coursePrerequisites,
-			final Set<String> coursesTakenByStudent)
-			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
+	private Set<CoursePlan> filterBestCoursePlans(final Set<CoursePlan> coursePlans) {
+		int bestUtility = Integer.MIN_VALUE;
+		for (final CoursePlan coursePlan : coursePlans) {
+			bestUtility = coursePlan.getUtility() > bestUtility ? coursePlan.getUtility() : bestUtility;
+		}
 
-		for (final String coursePrerequisite : coursePrerequisites) {
-			if (!coursesTakenByStudent.contains(coursePrerequisite)) {
-				// If the student took courses similar to a prerequisite that it also acceptable
-				int similarity = 0;
-				for (final String courseTakenByStudent : coursesTakenByStudent) {
-					similarity = getSimilarity(coursePrerequisite, courseTakenByStudent);
-					if (similarity > 0) {
-						break;
-					}
-				}
-				if (similarity == 0) {
-					return false;
-				}
+		final Set<CoursePlan> bestCoursePlans = new HashSet<>();
+
+		for (final CoursePlan coursePlan : coursePlans) {
+			if (coursePlan.getUtility() == bestUtility) {
+				bestCoursePlans.add(coursePlan);
 			}
 		}
-		return true;
-	}
 
-	/**
-	 * A course is considered similar to another course if there is an overlap on
-	 * topics and the same research methodology is used. When more topics overlap,
-	 * the similarity is higher.
-	 *
-	 * @return 0 if not similar, + 1 for every overlapping topic
-	 */
-	private int getSimilarity(final String course1, final String course2)
-			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
-		final QueryEngine queryEngine = QueryEngine.getInstance();
-
-		final String researchMethod1 = queryEngine.getInstancesShortForm("isUsedIn value " + course1, false).iterator()
-				.next();
-		final String researchMethod2 = queryEngine.getInstancesShortForm("isUsedIn value " + course2, false).iterator()
-				.next();
-
-		if (!researchMethod1.equals(researchMethod2)) {
-			return 0;
-		}
-
-		final Set<String> topics1 = queryEngine.getInstancesShortForm("taughtIn value " + course1, false);
-		final Set<String> topics2 = queryEngine.getInstancesShortForm("taughtIn value " + course2, false);
-
-		return (int) topics1.stream().filter(i -> topics2.contains(i)).count();
+		return bestCoursePlans;
 	}
 
 }

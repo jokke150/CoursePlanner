@@ -15,6 +15,8 @@ import org.uu.nl.ai.intelligent.agents.query.QueryEngine;
 
 public class CoursePlanner {
 	public static final String ONTOLOGY_PATH = "ontology/CoursePlanner.owl";
+
+	// Needs to be set to false after every ontology change to rebuild query cache
 	public static final boolean READ_CACHE = true;
 
 	public static void main(final String[] args)
