@@ -14,7 +14,6 @@ for period in periods:
 
                     # then check in all previous periods if this prereq is given
                     for period in previousperiods[period]:
-                        pass
 
                 else if course.preRequisite in student.hasTaken:
                     # replace new course
