@@ -12,12 +12,14 @@ import org.uu.nl.ai.intelligent.agents.data.Preferences;
 import org.uu.nl.ai.intelligent.agents.query.QueryEngine;
 
 public class CoursePlanner {
+	private static final boolean USE_SCENARIO_DATA = true;
+
 	public static final String ONTOLOGY_PATH = "ontology/CoursePlanner.owl";
 
 	// Needs to be set to false after every ontology change to rebuild query cache
 	public static final boolean READ_CACHE = true;
 
-	public static final int CACHE_WRITE_QUERIES = 1; // Number of queries after which cache is persisted
+	public static final int CACHE_WRITE_QUERIES = 5; // Number of queries after which cache is persisted
 
 	public static void main(final String[] args)
 			throws IOException, OWLOntologyCreationException, ClassNotFoundException {
@@ -28,21 +30,37 @@ public class CoursePlanner {
 
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-//		final String student = askForStudent(reader);
+		final String student;
+		final Preferences preferences;
+		if (USE_SCENARIO_DATA) {
+			// UNCOMMENT TO USE ;)
 
-		final String student = "Student1";
+			// SCENARIO 1: Zero Utility
+			// student = TestPreferenceProvider.getStudentForScenarioZeroUtility();
+			// preferences = TestPreferenceProvider.getPreferencesForScenarioZeroUtility();
 
-//		final Preferences preferences = new Preferences(reader);
-//		preferences.askForPreferences();
+			// SCENARIO 2: Prerequisite Inception
+			student = TestPreferenceProvider.getStudentForScenarioPrereqInception();
+			preferences = TestPreferenceProvider.getPreferencesForScenarioPrereqInception();
 
-		final Preferences preferences = TestPreferenceProvider.getPreferencesForPrerequisiteBranching();
+			// SCENARIO 3: Impossible Ontology
+			// student = TestPreferenceProvider.getStudentForScenarioImpossibleOntology();
+			// preferences =
+			// TestPreferenceProvider.getPreferencesForScenarioImpossibleOntology();
+
+			// SCENARIO 4: Use Case 1
+			// student = TestPreferenceProvider.getStudentForScenarioUseCase1();
+			// preferences = TestPreferenceProvider.getPreferencesForScenarioUseCase1();
+		} else {
+			student = askForStudent(reader);
+			preferences = new Preferences(reader);
+			preferences.askForPreferences();
+		}
 
 		reader.close();
 
 		final Agent agent = new Agent(student, preferences);
 		final Set<CoursePlan> bestCoursePlans = agent.getBestCoursePlans();
-
-//		System.out.println(bestCoursePlans);
 
 		printCoursePlans(bestCoursePlans);
 

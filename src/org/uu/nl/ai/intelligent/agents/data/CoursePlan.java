@@ -34,8 +34,6 @@ public class CoursePlan {
 		this.utilityByCourseInPeriod2 = new HashMap<>(coursePlan.utilityByCourseInPeriod2);
 		this.utilityByCourseInPeriod3 = new HashMap<>(coursePlan.utilityByCourseInPeriod3);
 		this.utilityByCourseInPeriod4 = new HashMap<>(coursePlan.utilityByCourseInPeriod4);
-
-		// TODO: causesBranch include?
 	}
 
 	public Set<String> getAllCourses() {
@@ -175,7 +173,6 @@ public class CoursePlan {
 			}
 			final int oldUtility = utilityByCourseEntry.getValue();
 			if (oldUtility < lowestUtil) {
-				// TODO: When two courses have the same utility, we should branch again...
 				lowestUtil = utility;
 				lowestUtilCourse = oldCourse;
 			}

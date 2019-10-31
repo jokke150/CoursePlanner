@@ -50,6 +50,10 @@ public class Agent {
 		final int startPeriod = coursePlan.getFirstIncompletePeriod();
 		final List<Set<String>> coursesInPeriods = getCoursesInPeriods(startPeriod);
 
+		// Get the prerequisite for all courses
+		final Map<String, Set<String>> prerequisitesByCourse = getPrerequisitesByCourse(
+				coursesInPeriods.stream().flatMap(Set::stream).collect(Collectors.toSet()));
+
 		// Get the best courses for each period
 		for (int period = startPeriod; period <= PERIOD_NAMES.size(); period++) {
 			if (!coursePlan.isPeriodFull(period)) {
@@ -66,9 +70,6 @@ public class Agent {
 					final Set<String> coursesNotAlreadyTaken = courses.stream()
 							.filter(i -> !coursesAlreadyTaken.contains(i)).collect(Collectors.toSet());
 
-					final Map<String, Set<String>> prerequisitesByCourse = getPrerequisitesByCourse(
-							coursesNotAlreadyTaken);
-
 					final Set<String> coursesPlannedForPrevPeriods = coursePlan.getAllCoursesUntilPeriod(period - 1);
 
 					for (final String course : coursesNotAlreadyTaken) {
@@ -81,14 +82,14 @@ public class Agent {
 						}
 
 						// Check for prerequisites
-						final Set<String> coursePrerequisites = prerequisitesByCourse.get(course);
 						final boolean prerequisiesMet = hasTakenPrerequisites(prerequisitesByCourse.get(course),
 								coursesAlreadyTaken, coursesPlannedForPrevPeriods);
 						if (!prerequisiesMet) {
 							// Prerequisites not met? Branch if it is feasible to take them in previous
 							// periods and skip course
-							final Set<PrerequisiteDemand> prerequisiteDemands = getPrerequisiteDemands(
-									coursePrerequisites, startPeriod, period, coursesInPeriods);
+							final Set<PrerequisiteDemand> prerequisiteDemands = getPrerequisiteDemands(course,
+									prerequisitesByCourse, startPeriod, period, coursesInPeriods, coursesAlreadyTaken,
+									coursePlan);
 							if (prerequisiteDemands != null) {
 								// All prerequisites can be met in previous periods
 								final CoursePlan branch = CoursePlan.branchByDemandingPrerequisites(coursePlan,
@@ -115,7 +116,6 @@ public class Agent {
 						// preferable, the student would like to take a course that her friend takes.
 
 						// Assumption: The more friends take a course the more preferable it is
-						// TODO: Correct? If yes, include in report!
 
 						// We just use one random course with the highest number of friends
 						// and do not create branches for all of them
@@ -198,16 +198,23 @@ public class Agent {
 	}
 
 	/**
+	 * @param coursePlan
+	 * @param coursesAlreadyTaken
 	 * @return Set of PrerequisiteDemands or null if a prerequisite cannot be met in
 	 *         any preveious period - similar courses are also considered!
 	 */
-	private Set<PrerequisiteDemand> getPrerequisiteDemands(final Set<String> coursePrerequisites, final int startPeriod,
-			final int period, final List<Set<String>> coursesInPeriods)
+	private Set<PrerequisiteDemand> getPrerequisiteDemands(final String course,
+			final Map<String, Set<String>> prerequisitesByCourse, final int startPeriod, final int period,
+			final List<Set<String>> coursesInPeriods, final Set<String> coursesAlreadyTaken,
+			final CoursePlan coursePlan)
 			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
+
+		final Set<String> coursePrerequisites = prerequisitesByCourse.get(course);
+
 		final Set<PrerequisiteDemand> prerequisiteDemands = new HashSet<>();
 		for (final String prerequisite : coursePrerequisites) {
 			final PrerequisiteSubstitute prerequisiteSubstitute = checkForPrereqOrSubstInPrevPeriod(prerequisite,
-					startPeriod, period, coursesInPeriods);
+					prerequisitesByCourse, startPeriod, period, coursesInPeriods, coursesAlreadyTaken, coursePlan);
 			if (prerequisiteSubstitute != null) {
 				final int prereqUtility = calculateUtility(prerequisite);
 				final PrerequisiteDemand prerequisiteDemand = new PrerequisiteDemand(prerequisiteSubstitute.getCourse(),
@@ -221,8 +228,10 @@ public class Agent {
 		return prerequisiteDemands;
 	}
 
-	private PrerequisiteSubstitute checkForPrereqOrSubstInPrevPeriod(final String prerequisite, final int startPeriod,
-			final int currentPeriod, final List<Set<String>> coursesInPeriods)
+	private PrerequisiteSubstitute checkForPrereqOrSubstInPrevPeriod(final String prerequisite,
+			final Map<String, Set<String>> prerequisitesByCourse, final int startPeriod, final int currentPeriod,
+			final List<Set<String>> coursesInPeriods, final Set<String> coursesAlreadyTaken,
+			final CoursePlan coursePlan)
 			throws UnsupportedEncodingException, OWLOntologyCreationException, IOException {
 
 		// We will not return any possible period but just the first occurence of a
@@ -230,15 +239,24 @@ public class Agent {
 		for (int period = startPeriod; period < currentPeriod; period++) {
 			final Set<String> coursesInPeriod = coursesInPeriods.get(period - startPeriod);
 			// Check if prerequisite is offered in period
-			if (coursesInPeriod.contains(prerequisite)) {
+			final Set<String> coursesPlannedForPrevPeriods = coursePlan.getAllCoursesUntilPeriod(period - 1);
+			if (!coursesAlreadyTaken.contains(prerequisite) && !coursesPlannedForPrevPeriods.contains(prerequisite)
+					&& hasTakenPrerequisites(prerequisitesByCourse.get(prerequisite), coursesAlreadyTaken,
+							coursesPlannedForPrevPeriods)
+					&& coursesInPeriod.contains(prerequisite)) {
 				return new PrerequisiteSubstitute(period, prerequisite);
 			}
 
 			// Check for similar courses alternatively
 			for (final String courseInPeriod : coursesInPeriod) {
-				final int similarity = getSimilarity(courseInPeriod, prerequisite);
-				if (similarity > 0) {
-					return new PrerequisiteSubstitute(period, courseInPeriod);
+				if (!coursesAlreadyTaken.contains(courseInPeriod)
+						&& !coursesPlannedForPrevPeriods.contains(courseInPeriod)
+						&& hasTakenPrerequisites(prerequisitesByCourse.get(courseInPeriod), coursesAlreadyTaken,
+								coursesPlannedForPrevPeriods)) {
+					final int similarity = getSimilarity(courseInPeriod, prerequisite);
+					if (similarity > 0) {
+						return new PrerequisiteSubstitute(period, courseInPeriod);
+					}
 				}
 			}
 		}
@@ -298,11 +316,8 @@ public class Agent {
 		final Set<String> courseTopics = queryEngine.getInstancesShortForm("taughtIn value " + course, false);
 		// Assumption: If a student prefers/dislikes a parent topic he also
 		// prefers/dislikes all subtopics
-		// TODO: Correct? If yes, include in report!
 		courseTopics.addAll(findParentTopics(courseTopics));
 
-		// TODO: Is the utility the same if the student prefers/dislikes only one versus
-		// multiple of the topics taught in the course?
 		if (preferredTopics.stream().anyMatch(i -> courseTopics.contains(i))) {
 			utility += this.preferences.getPreferredTopicsWeight();
 		}
@@ -310,8 +325,6 @@ public class Agent {
 			utility -= this.preferences.getDislikedTopicsWeight();
 		}
 
-		// TODO: Is the utility the same if the student prefers/dislikes only one versus
-		// multiple of the lecturers teaching the course?
 		final Set<String> courseLecturers = queryEngine.getInstancesShortForm("teaches value " + course, false);
 
 		if (preferredLecturers.stream().anyMatch(i -> courseLecturers.contains(i))) {
@@ -321,8 +334,6 @@ public class Agent {
 			utility -= this.preferences.getDislikedLecturersWeight();
 		}
 
-		// TODO: Is the utility the same if the student prefers/dislikes only one versus
-		// multiple of the days the course is taught on?
 		final Set<String> courseDays = queryEngine.getInstancesShortForm("comprisesCourse value " + course, false);
 
 		if (preferredDays.stream().anyMatch(i -> courseDays.contains(i))) {
