@@ -19,6 +19,8 @@ public class CoursePlanner {
 	// Needs to be set to false after every ontology change to rebuild query cache
 	public static final boolean READ_CACHE = true;
 
+	public static final int CACHE_WRITE_QUERIES = 5; // Number of queries after which cache is persisted
+
 	public static void main(final String[] args)
 			throws IOException, OWLOntologyCreationException, ClassNotFoundException {
 
