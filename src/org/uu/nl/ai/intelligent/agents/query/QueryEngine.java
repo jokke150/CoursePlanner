@@ -115,10 +115,10 @@ public class QueryEngine {
 	public Set<String> getInstancesShortForm(final String classExpressionString, final boolean direct)
 			throws IOException {
 		if (this.instancesShortFormCache.containsKey(classExpressionString)) {
-			System.out.println("Cache");
+			// System.out.println("Cache");
 			return this.instancesShortFormCache.get(classExpressionString);
 		} else {
-			System.out.println("Query");
+			// System.out.println("Query");
 			final Set<OWLNamedIndividual> instances = getInstances(classExpressionString, direct);
 
 			final Set<String> instancesShortForm = new HashSet<>();
@@ -144,7 +144,7 @@ public class QueryEngine {
 		oos.writeObject(this.instancesShortFormCache);
 		oos.close();
 		fos.close();
-		System.out.println("Serialized Cache");
+		// System.out.println("Serialized Cache");
 	}
 
 	public void readInstancesShortFormCache() throws ClassNotFoundException, IOException {

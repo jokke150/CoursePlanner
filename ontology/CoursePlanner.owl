@@ -68,10 +68,6 @@
     <owl:ObjectProperty rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#houses">
         <owl:inverseOf rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#locatedIn"/>
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
-        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Building"/>
-        <rdfs:domain rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Classroom"/>
-        <rdfs:range rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Classroom"/>
-        <rdfs:range rdf:resource="http:/uu.nl/Course"/>
     </owl:ObjectProperty>
     
 
@@ -1291,6 +1287,7 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/BusinessIntelligence">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod1"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Lenov109"/>
         <uu:isOn rdf:resource="http:/uu.nl/BasicMathematics"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#ChrisJanssen"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Friday"/>

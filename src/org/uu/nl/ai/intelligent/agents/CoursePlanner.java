@@ -17,7 +17,7 @@ public class CoursePlanner {
 	public static final String ONTOLOGY_PATH = "ontology/CoursePlanner.owl";
 
 	// Needs to be set to false after every ontology change to rebuild query cache
-	public static final boolean READ_CACHE = true;
+	public static final boolean READ_CACHE = false;
 
 	public static final int CACHE_WRITE_QUERIES = 5; // Number of queries after which cache is persisted
 
