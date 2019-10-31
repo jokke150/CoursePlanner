@@ -112,7 +112,6 @@ public class QueryEngine {
 
 	public Set<String> getInstancesShortForm(final String classExpressionString, final boolean direct) {
 		if (this.instancesShortFormCache.containsKey(classExpressionString)) {
-			System.out.println("Cache!");
 			return this.instancesShortFormCache.get(classExpressionString);
 		} else {
 			final Set<OWLNamedIndividual> instances = getInstances(classExpressionString, direct);
