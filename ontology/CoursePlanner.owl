@@ -1637,8 +1637,10 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/NaturalLanguageProcessing">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod4"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#O61"/>
         <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#BobMarley"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Thursday"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Tuesday"/>
         <uu:uses rdf:resource="http:/uu.nl/Theory"/>
         <rdfs:label>NaturalLanguageProcessing</rdfs:label>
@@ -1676,9 +1678,11 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/ResearchInternshipAI">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod4"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Lenov103"/>
         <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PinarYolum"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Monday"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Thursday"/>
         <uu:uses rdf:resource="http:/uu.nl/Mixed"/>
         <rdfs:label>ResearchInternshipAI</rdfs:label>
     </owl:NamedIndividual>
@@ -1707,9 +1711,11 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/Statistics">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod4"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#O1"/>
         <uu:isOn rdf:resource="http:/uu.nl/BasicMathematics"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#ChrisJanssen"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Thursday"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Tuesday"/>
         <uu:uses rdf:resource="http:/uu.nl/SecondaryDataAnalysis"/>
         <rdfs:label>Statistics</rdfs:label>
     </owl:NamedIndividual>
