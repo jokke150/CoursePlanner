@@ -773,6 +773,14 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#CalvinKlein -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#CalvinKlein">
+        <rdf:type rdf:resource="http:/uu.nl/Lecturer"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#CenterLibrary -->
 
     <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#CenterLibrary">
@@ -791,6 +799,14 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#DanielGillies -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#DanielGillies">
+        <rdf:type rdf:resource="http:/uu.nl/Lecturer"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#DescriptionLogic -->
 
     <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#DescriptionLogic">
@@ -803,6 +819,14 @@
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#FlorisBex -->
 
     <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#FlorisBex">
+        <rdf:type rdf:resource="http:/uu.nl/Lecturer"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#JosephMorgan -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#JosephMorgan">
         <rdf:type rdf:resource="http:/uu.nl/Lecturer"/>
     </owl:NamedIndividual>
     
@@ -1116,6 +1140,14 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Usability -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Usability">
+        <rdf:type rdf:resource="http:/uu.nl/Topic"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http:/uu.nl/AccelerationStructures -->
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/AccelerationStructures">
@@ -1416,6 +1448,11 @@
     <owl:NamedIndividual rdf:about="http:/uu.nl/MobileInteraction">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod2"/>
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod3"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Lenov105"/>
+        <uu:isOn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Usability"/>
+        <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#AndrewLees"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Friday"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Tuesday"/>
         <uu:uses rdf:resource="http:/uu.nl/Surveys"/>
         <rdfs:label>MobileInteraction</rdfs:label>
     </owl:NamedIndividual>
