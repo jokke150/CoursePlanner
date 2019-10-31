@@ -144,7 +144,7 @@ public class QueryEngine {
 		oos.writeObject(this.instancesShortFormCache);
 		oos.close();
 		fos.close();
-		// System.out.println("Serialized Cache");
+		System.out.println("Serialized Cache");
 	}
 
 	public void readInstancesShortFormCache() throws ClassNotFoundException, IOException {

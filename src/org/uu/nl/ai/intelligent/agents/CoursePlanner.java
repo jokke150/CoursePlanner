@@ -3,10 +3,8 @@ package org.uu.nl.ai.intelligent.agents;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.uu.nl.ai.intelligent.agents.data.CoursePlan;
@@ -17,9 +15,9 @@ public class CoursePlanner {
 	public static final String ONTOLOGY_PATH = "ontology/CoursePlanner.owl";
 
 	// Needs to be set to false after every ontology change to rebuild query cache
-	public static final boolean READ_CACHE = false;
+	public static final boolean READ_CACHE = true;
 
-	public static final int CACHE_WRITE_QUERIES = 5; // Number of queries after which cache is persisted
+	public static final int CACHE_WRITE_QUERIES = 1; // Number of queries after which cache is persisted
 
 	public static void main(final String[] args)
 			throws IOException, OWLOntologyCreationException, ClassNotFoundException {
@@ -37,24 +35,7 @@ public class CoursePlanner {
 //		final Preferences preferences = new Preferences(reader);
 //		preferences.askForPreferences();
 
-		final Set<String> preferredCourses = Arrays.asList("IntelligentAgents").stream().collect(Collectors.toSet());
-		final Set<String> preferredTopics = Arrays.asList("DescriptionLogic", "Optimisation").stream()
-				.collect(Collectors.toSet());
-		final Set<String> preferredLecturers = Arrays.asList("Lecturer1").stream().collect(Collectors.toSet());
-		final Set<String> preferredDays = Arrays.asList("Monday", "Tuesday").stream().collect(Collectors.toSet());
-
-		final Set<String> dislikedCourses = Arrays.asList("BusinessIntelligence").stream().collect(Collectors.toSet());
-		final Set<String> dislikedTopics = Arrays.asList("Multi-AgentSystems", "ResearchInternshipAI").stream()
-				.collect(Collectors.toSet());
-		final Set<String> dislikedLecturers = Arrays.asList("Lecturer2").stream().collect(Collectors.toSet());
-		final Set<String> dislikedDays = Arrays.asList("Thursday", "Wednesday").stream().collect(Collectors.toSet());
-
-		final Preferences preferences = new Preferences(preferredCourses, preferredTopics, preferredLecturers,
-				preferredDays, 10, 1, 5, 8, dislikedCourses, dislikedTopics, dislikedLecturers, dislikedDays, 2, 2, 1,
-				8);
-
-//		final Preferences preferences = new Preferences(reader);
-//		preferences.askForPreferences();
+		final Preferences preferences = TestPreferenceProvider.getPreferencesForPrerequisiteBranching();
 
 		reader.close();
 
@@ -103,25 +84,27 @@ public class CoursePlanner {
 		String classroom;
 		String day;
 
+		final int numOfCoursePlan = 1;
 		for (final CoursePlan coursePlan : coursePlans) {
 			System.out.println("------------------------------");
-			System.out.println("This is your study plan:\n");
+			System.out.println("This is your study plan number " + numOfCoursePlan + ":\n");
 			for (int i = 1; i <= 4; i++) {
 				System.out.println("PERIOD " + i + ":");
 				courses = coursePlan.getCoursesInPeriod(i);
 
 				for (final String course : courses) {
-					building = String.join("",
+					building = String.join(" , ",
 							queryEngine.getInstancesShortForm("Building and houses value " + course, false));
-					classroom = String.join("",
+					classroom = String.join(" , ",
 							queryEngine.getInstancesShortForm("Classroom and houses value " + course, false));
-					day = String.join("",
+					day = String.join(" and ",
 							queryEngine.getInstancesShortForm("Day and comprisesCourse value " + course, false));
 					System.out.println("*** " + course + " - every " + day + " in " + classroom + ", " + building);
 				}
 				System.out.println("\n");
 			}
 			System.out.println("------------------------------");
+			System.out.println("In total the agent found " + coursePlans.size() + " study plan(s).");
 		}
 	}
 
