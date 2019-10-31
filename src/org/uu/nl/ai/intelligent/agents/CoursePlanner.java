@@ -28,8 +28,6 @@ public class CoursePlanner {
 			QueryEngine.getInstance().readInstancesShortFormCache();
 		}
 
-		final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
 		final String student;
 		final Preferences preferences;
 		if (USE_SCENARIO_DATA) {
@@ -52,12 +50,12 @@ public class CoursePlanner {
 			// student = TestPreferenceProvider.getStudentForScenarioUseCase1();
 			// preferences = TestPreferenceProvider.getPreferencesForScenarioUseCase1();
 		} else {
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 			student = askForStudent(reader);
 			preferences = new Preferences(reader);
 			preferences.askForPreferences();
+			reader.close();
 		}
-
-		reader.close();
 
 		final Agent agent = new Agent(student, preferences);
 		final Set<CoursePlan> bestCoursePlans = agent.getBestCoursePlans();
