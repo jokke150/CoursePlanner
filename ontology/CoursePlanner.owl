@@ -790,6 +790,21 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#CapitaSelecta -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#CapitaSelecta">
+        <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod4"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Lenov110"/>
+        <uu:isOn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Usability"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Caching"/>
+        <uu:isOn rdf:resource="http:/uu.nl/Systems"/>
+        <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#JosephMorgan"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Friday"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Wednesday"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#CenterLibrary -->
 
     <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#CenterLibrary">
