@@ -61,9 +61,9 @@ public class CoursePlanner {
 		final Agent agent = new Agent(student, preferences);
 		final Set<CoursePlan> bestCoursePlans = agent.getBestCoursePlans();
 
-		System.out.println(bestCoursePlans);
+//		System.out.println(bestCoursePlans);
 
-		// printCoursePlans(bestCoursePlans);
+		printCoursePlans(bestCoursePlans);
 
 	}
 
