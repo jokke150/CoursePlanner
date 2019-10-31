@@ -1227,6 +1227,14 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#VladIvan -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#VladIvan">
+        <rdf:type rdf:resource="http:/uu.nl/Lecturer"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http:/uu.nl/AccelerationStructures -->
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/AccelerationStructures">
@@ -1478,7 +1486,11 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/LogicAndComputation">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod3"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#O2"/>
         <uu:isOn rdf:resource="http:/uu.nl/Logic"/>
+        <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#VladIvan"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Monday"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Tuesday"/>
         <uu:uses rdf:resource="http:/uu.nl/Theory"/>
     </owl:NamedIndividual>
     
