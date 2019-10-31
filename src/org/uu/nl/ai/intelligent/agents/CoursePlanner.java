@@ -17,6 +17,8 @@ public class CoursePlanner {
 	public static final String ONTOLOGY_PATH = "ontology/CoursePlanner.owl";
 	public static final boolean READ_CACHE = true;
 
+	public static final int CACHE_WRITE_QUERIES = 5;
+
 	public static void main(final String[] args)
 			throws IOException, OWLOntologyCreationException, ClassNotFoundException {
 
@@ -26,7 +28,87 @@ public class CoursePlanner {
 
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-//		final String student = askForStudent(reader);
+//		askForStudent(reader);
+
+		System.out.println("Please enter your student ID: ");
+		System.out.println("6979270");
+
+		System.out.println("Press Any Key To Continue...");
+		new java.util.Scanner(System.in).nextLine();
+
+		System.out.println("Please enter your preferred courses (comma-separated): ");
+		System.out.println("IntelligentAgents");
+
+		System.out.println("How important is it to take courses that you prefer? Enter a value between " + 1 + " and "
+				+ 10 + ": ");
+		System.out.println(10);
+
+		System.out.println("Press Any Key To Continue...");
+		new java.util.Scanner(System.in).nextLine();
+
+		System.out.println("Please enter your disliked courses (comma-separated): ");
+		System.out.println("BusinessIntelligence");
+
+		System.out.println("How important is it not to take courses that you dislike? Enter a value between " + 1
+				+ " and " + 10 + ": ");
+		System.out.println(2);
+
+		System.out.println("Press Any Key To Continue...");
+		new java.util.Scanner(System.in).nextLine();
+
+		System.out.println("Please enter your preferred topics (comma-separated): ");
+		System.out.println("DescriptionLogic, Optimisation");
+
+		System.out.println("How important is it to take courses on topics that you prefer? Enter a value between " + 1
+				+ " and " + 10 + ": ");
+		System.out.println(1);
+
+		System.out.println("Press Any Key To Continue...");
+		new java.util.Scanner(System.in).nextLine();
+
+		System.out.println("Please enter your disliked topics (comma-separated): ");
+		System.out.println("Multi-AgentSystems, ResearchInternshipAI");
+
+		System.out.println("How important is it not to take courses on topics that you dislike? Enter a value between "
+				+ 1 + " and " + 10 + ": ");
+		System.out.println(2);
+
+		System.out.println("Press Any Key To Continue...");
+		new java.util.Scanner(System.in).nextLine();
+
+		System.out.println("Please enter your preferred lecturers (comma-separated): ");
+		System.out.println("Lecturer1");
+
+		System.out.println(
+				"How important is it to take courses taught by lecturers that you prefer? Enter a value between " + 1
+						+ " and " + 10 + ": ");
+		System.out.println(5);
+
+		System.out.println("Press Any Key To Continue...");
+		new java.util.Scanner(System.in).nextLine();
+
+		System.out.println("Please enter your disliked lecturers (comma-separated): ");
+		System.out.println("Lecturer2");
+
+		System.out.println(
+				"How important is it to not take courses taught by lecturers that you dislike? Enter a value between "
+						+ 1 + " and " + 10 + ": ");
+		System.out.println(1);
+
+		System.out.println("Press Any Key To Continue...");
+		new java.util.Scanner(System.in).nextLine();
+
+		System.out.println("Please enter your preferred days (comma-separated): ");
+		System.out.println("Monday, Tuesday");
+
+		System.out.println("Press Any Key To Continue...");
+		new java.util.Scanner(System.in).nextLine();
+
+		System.out.println("Please enter your disliked days (comma-separated): ");
+		System.out.println("Thursday, Wednesday");
+
+		System.out.println("Press Any Key To Continue...");
+		new java.util.Scanner(System.in).nextLine();
 
 		final String student = "Student1";
 
@@ -49,17 +131,14 @@ public class CoursePlanner {
 				preferredDays, 10, 1, 5, 8, dislikedCourses, dislikedTopics, dislikedLecturers, dislikedDays, 2, 2, 1,
 				8);
 
-//		final Preferences preferences = new Preferences(reader);
-//		preferences.askForPreferences();
-
 		reader.close();
 
 		final Agent agent = new Agent(student, preferences);
 		final Set<CoursePlan> bestCoursePlans = agent.getBestCoursePlans();
 
-		System.out.println(bestCoursePlans);
+//		System.out.println("Best course plans overall: " + bestCoursePlans);
 
-		// printCoursePlans(bestCoursePlans);
+		printCoursePlans(bestCoursePlans);
 
 	}
 
@@ -113,7 +192,7 @@ public class CoursePlanner {
 							queryEngine.getInstancesShortForm("Classroom and houses value " + course, false));
 					day = String.join("",
 							queryEngine.getInstancesShortForm("Day and comprisesCourse value " + course, false));
-					System.out.println("*** " + course + " - every " + day + " in " + classroom + ", " + building);
+					System.out.println("*** " + course);
 				}
 				System.out.println("\n");
 			}

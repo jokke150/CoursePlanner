@@ -34,6 +34,8 @@ import org.uu.nl.ai.intelligent.agents.CoursePlanner;
 public class QueryEngine {
 	private static QueryEngine instance = null;
 
+	private int queryCount = 0;
+
 	private final OWLReasoner reasoner;
 	private final QueryParser parser;
 	private final ShortFormProvider shortFormProvider;
@@ -110,9 +112,9 @@ public class QueryEngine {
 		return individuals.getFlattened();
 	}
 
-	public Set<String> getInstancesShortForm(final String classExpressionString, final boolean direct) {
+	public Set<String> getInstancesShortForm(final String classExpressionString, final boolean direct)
+			throws IOException {
 		if (this.instancesShortFormCache.containsKey(classExpressionString)) {
-			System.out.println("Cache!");
 			return this.instancesShortFormCache.get(classExpressionString);
 		} else {
 			final Set<OWLNamedIndividual> instances = getInstances(classExpressionString, direct);
@@ -123,18 +125,23 @@ public class QueryEngine {
 
 			this.instancesShortFormCache.put(classExpressionString, instancesShortForm);
 
+			this.queryCount++;
+			if (this.queryCount >= CoursePlanner.CACHE_WRITE_QUERIES) {
+				dumpInstancesShortFormCache();
+				this.queryCount = 0;
+			}
+
 			return instancesShortForm;
 		}
 
 	}
 
-	public void dumpInstancesShortFormCache() throws IOException {
+	private void dumpInstancesShortFormCache() throws IOException {
 		final FileOutputStream fos = new FileOutputStream("cache.ser");
 		final ObjectOutputStream oos = new ObjectOutputStream(fos);
 		oos.writeObject(this.instancesShortFormCache);
 		oos.close();
 		fos.close();
-		System.out.println("Serialized Cache");
 	}
 
 	public void readInstancesShortFormCache() throws ClassNotFoundException, IOException {

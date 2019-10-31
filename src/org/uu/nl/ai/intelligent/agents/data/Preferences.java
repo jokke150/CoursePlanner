@@ -269,7 +269,7 @@ public class Preferences {
 	}
 
 	private static void printRange(final Collection<String> range) {
-		System.out.println("Valid values: " + Arrays.toString(range.toArray()));
+		// System.out.println("Valid values: " + Arrays.toString(range.toArray()));
 	}
 
 	private static Set<String> convertInput(final String input) {

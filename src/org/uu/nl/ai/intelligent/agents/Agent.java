@@ -154,6 +154,10 @@ public class Agent {
 		// Add coursePlan to the collection of coursePlans to return
 		coursePlans.add(coursePlan);
 
+		System.out.println("");
+		System.out.println("All course plans for this branch: " + coursePlans);
+		System.out.println("");
+
 		return filterBestCoursePlans(coursePlans);
 
 	}
