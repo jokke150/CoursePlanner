@@ -757,6 +757,14 @@
     
 
 
+    <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#AndrewLees -->
+
+    <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#AndrewLees">
+        <rdf:type rdf:resource="http:/uu.nl/Lecturer"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#BobMarley -->
 
     <owl:NamedIndividual rdf:about="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#BobMarley">
@@ -1164,6 +1172,7 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/ComputerVision">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod1"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Lenov106"/>
         <uu:isOn rdf:resource="http:/uu.nl/Optimisation"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#PinarYolum"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Tuesday"/>
@@ -1202,9 +1211,11 @@
 
     <owl:NamedIndividual rdf:about="http:/uu.nl/CrowdSimulation">
         <rdf:type rdf:resource="http:/uu.nl/CoursePerPeriod1"/>
+        <locatedIn rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#Lenov101"/>
         <uu:isOn rdf:resource="http:/uu.nl/Optimisation"/>
         <uu:taughtBy rdf:resource="http://webprotege.stanford.edu/project/55u3gK4ZDToAQhzLEwYa2#ParisHilton"/>
         <uu:taughtOn rdf:resource="http:/uu.nl/Monday"/>
+        <uu:taughtOn rdf:resource="http:/uu.nl/Wednesday"/>
         <uu:uses rdf:resource="http:/uu.nl/Simulation"/>
         <rdfs:label>CrowdSimulation</rdfs:label>
     </owl:NamedIndividual>
